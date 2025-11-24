@@ -1,22 +1,18 @@
-// Login.jsx
-// Simple login form
-
 import { useState } from "react";
+import { login } from "../api/auth";
 import Navbar from "../components/Navbar";
-import { loginUser } from "../api/api";
 
 export default function Login() {
-  const [form, setForm] = useState({ username: "", password: "" });
+  const [form, setForm] = useState({ email: "", password: "" });
 
   async function handleSubmit(e) {
     e.preventDefault();
+
     try {
-      const res = await loginUser(form);
-      alert("Login successful!");
-      console.log(res.data);
+      const user = await login(form);
+      alert("Login successful: " + user.name);
     } catch (err) {
       alert("Login failed");
-      console.error(err);
     }
   }
 
@@ -27,8 +23,8 @@ export default function Login() {
 
       <form onSubmit={handleSubmit}>
         <input
-          placeholder="Username"
-          onChange={(e) => setForm({ ...form, username: e.target.value })}
+          placeholder="Email"
+          onChange={(e) => setForm({ ...form, email: e.target.value })}
         /><br />
 
         <input

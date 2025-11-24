@@ -1,23 +1,23 @@
-// Orders.jsx
-// Displays all orders for a user
-
 import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
-import { getUserOrders } from "../api/api";
+import { getOrdersByCustomer } from "../api/orders";
 
 export default function Orders() {
   const [orders, setOrders] = useState([]);
 
+  // If no login: use customerId = 1
+  const customerId = 1;
+
   useEffect(() => {
-    async function load() {
+    async function loadOrders() {
       try {
-        const res = await getUserOrders(1); // TEMP user ID
-        setOrders(res.data);
+        const data = await getOrdersByCustomer(customerId);
+        setOrders(data);
       } catch (err) {
         console.error(err);
       }
     }
-    load();
+    loadOrders();
   }, []);
 
   return (
@@ -29,7 +29,7 @@ export default function Orders() {
 
       {orders.map((order) => (
         <div
-          key={order.id}
+          key={order.orderID}
           style={{
             border: "1px solid #ccc",
             padding: "10px",
@@ -37,9 +37,9 @@ export default function Orders() {
             borderRadius: "6px"
           }}
         >
-          <strong>Order #{order.id}</strong>
-          <p>Item: {order.itemName}</p>
-          <p>Price: ${order.price}</p>
+          <strong>Order #{order.orderID}</strong>
+          <p>Total: ${order.orderTotal}</p>
+          <p>Status: {order.status}</p>
         </div>
       ))}
     </div>

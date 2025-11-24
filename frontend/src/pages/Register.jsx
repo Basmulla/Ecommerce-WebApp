@@ -1,18 +1,19 @@
-// Register.jsx
-// Simple registration form
-
 import { useState } from "react";
 import Navbar from "../components/Navbar";
-import { registerUser } from "../api/api";
+import { register } from "../api/auth";
 
 export default function Register() {
-  const [form, setForm] = useState({ username: "", password: "" });
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    password: ""
+  });
 
   async function handleSubmit(e) {
     e.preventDefault();
 
     try {
-      await registerUser(form);
+      await register(form);
       alert("Account created!");
     } catch (err) {
       alert("Registration failed");
@@ -27,8 +28,13 @@ export default function Register() {
 
       <form onSubmit={handleSubmit}>
         <input
-          placeholder="Username"
-          onChange={(e) => setForm({ ...form, username: e.target.value })}
+          placeholder="Full Name"
+          onChange={(e) => setForm({ ...form, name: e.target.value })}
+        /><br />
+
+        <input
+          placeholder="Email"
+          onChange={(e) => setForm({ ...form, email: e.target.value })}
         /><br />
 
         <input
@@ -37,7 +43,7 @@ export default function Register() {
           onChange={(e) => setForm({ ...form, password: e.target.value })}
         /><br />
 
-        <button>Register</button>
+        <button>Create Account</button>
       </form>
     </div>
   );
