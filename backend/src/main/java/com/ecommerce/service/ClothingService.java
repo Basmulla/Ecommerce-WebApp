@@ -37,7 +37,6 @@ public class ClothingService {
         return true;
     }
 
-    /* Filters */
     public List<Clothing> findBySize(String size) {
         return repo.findBySizeLabel(size);
     }

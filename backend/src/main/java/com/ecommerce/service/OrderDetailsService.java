@@ -17,10 +17,6 @@ public class OrderDetailsService {
         return repo.findAll();
     }
 
-    public List<OrderDetails> getByOrderId(Long orderId) {
-        return repo.findByOrder_OrderId(orderId);
-    }
-
     public OrderDetails getById(Long id) {
         return repo.findById(id).orElse(null);
     }

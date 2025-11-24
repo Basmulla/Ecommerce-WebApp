@@ -7,16 +7,16 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "Manager")
-@PrimaryKeyJoinColumn(name = "StaffId")
+@Table(name = "MANAGER")
+@PrimaryKeyJoinColumn(name = "STAFFID")
 public class Manager extends Staff {
 
-    @Column(name ="OfficeNumber")
+    @Column(name = "OFFICENUMBER")
     private Integer officeNumber;
 
-    @Column(name = "Salary")
+    @Column(name = "SALARY")
     private Double salary;
 
-    @Column(name = "YearsExpereience")
+    @Column(name = "YEARSEXPEREIENCE")
     private Integer yearsExperience;
 }

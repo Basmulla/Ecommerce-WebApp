@@ -7,13 +7,13 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "Electronics")
-@PrimaryKeyJoinColumn(name = "ProductID")
+@Table(name = "ELECTRONICS")
+@PrimaryKeyJoinColumn(name = "PRODUCTID")
 public class Electronics extends Product {
 
-    @Column(name = "WarrantyPeriod")
+    @Column(name = "WARRANTYPERIOD")
     private String warrantyPeriod;
 
-    @Column(name = "PowerRating")
+    @Column(name = "POWERRATING")
     private String powerRating;
 }

@@ -37,12 +37,11 @@ public class BooksService {
         return true;
     }
 
-    /* Extra filters */
-    public List<Books> findByAuthor(String author) {
-        return repo.findByAuthor(author);
-    }
-
     public Books findByISBN(String isbn) {
         return repo.findByISBN(isbn);
+    }
+
+    public List<Books> findByAuthor(String author) {
+        return repo.findByAuthor(author);
     }
 }

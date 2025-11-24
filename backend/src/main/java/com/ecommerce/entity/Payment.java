@@ -8,23 +8,23 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "Payment")
+@Table(name = "PAYMENT")
 public class Payment {
 
     @Id
-    @Column(name = "PaymentID")
+    @Column(name = "PAYMENTID")
     private Long paymentId;
 
     @OneToOne
-    @JoinColumn(name = "OrderID")
+    @JoinColumn(name = "ORDERID")
     private Orders order;
 
-    @Column(name = "PaymentMethod")
+    @Column(name = "PAYMENTMETHOD")
     private String paymentMethod;
 
-    @Column(name = "Amount")
+    @Column(name = "AMOUNT")
     private Double amount;
 
-    @Column(name = "DatePaid")
+    @Column(name = "DATEPAID")
     private Date datePaid;
 }

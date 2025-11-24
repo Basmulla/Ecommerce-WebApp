@@ -1,83 +1,98 @@
 package com.ecommerce.controller;
 
-import com.ecommerce.dto.AuthResponse;
-import com.ecommerce.dto.LoginRequest;
 import com.ecommerce.entity.Customer;
 import com.ecommerce.entity.Staff;
-import com.ecommerce.repository.CustomerRepository;
-import com.ecommerce.repository.StaffRepository;
 import com.ecommerce.security.JwtService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import com.ecommerce.service.CustomerService;
+import com.ecommerce.service.StaffService;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/auth")
-@CrossOrigin("*")
+@RequestMapping("/auth")
+@RequiredArgsConstructor
+@CrossOrigin
 public class AuthController {
 
-    @Autowired
-    private CustomerRepository customerRepository;
+    private final CustomerService customerService;
+    private final StaffService staffService;
+    private final JwtService jwtService;
 
-    @Autowired
-    private StaffRepository staffRepository;
+    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
+    // -------------------------------------------------------------
+    // 1. Staff Login
+    // -------------------------------------------------------------
+    @PostMapping("/login/staff")
+    public AuthResponse staffLogin(@RequestBody LoginRequest request) {
 
-    @Autowired
-    private JwtService jwtService;
-
-    @PostMapping("/register")
-    public ResponseEntity<?> registerCustomer(@RequestBody Customer c) {
-        if (customerRepository.findByEmail(c.getEmail()).isPresent()) {
-            return ResponseEntity.badRequest().body("Email already in use.");
+        Staff staff = staffService.findByEmail(request.getEmail());
+        if (staff == null) {
+            return new AuthResponse(null, "Invalid email or password", null, null, null);
         }
 
-        c.setPassword(passwordEncoder.encode(c.getPassword()));
-        Customer saved = customerRepository.save(c);
+        if (!passwordEncoder.matches(request.getPassword(), staff.getPassword())) {
+            return new AuthResponse(null, "Invalid email or password", null, null, null);
+        }
 
-        return ResponseEntity.ok(saved);
+        // JWT Generation
+        String token = jwtService.generateToken(staff.getEmail(), staff.getRole(), staff.getStaffId());
+
+        return new AuthResponse(
+                token,
+                "STAFF_LOGIN_SUCCESS",
+                staff.getRole(),
+                staff.getName(),
+                staff.getEmail()
+        );
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest req) {
+    // -------------------------------------------------------------
+    // 2. Customer Login
+    // -------------------------------------------------------------
+    @PostMapping("/login/customer")
+    public AuthResponse customerLogin(@RequestBody LoginRequest request) {
 
-        Staff staff = staffRepository.findByEmail(req.getEmail()).orElse(null);
-        if (staff != null) {
-            if (!passwordEncoder.matches(req.getPassword(), staff.getPassword())) {
-                return ResponseEntity.status(401).body("Invalid credentials");
-            }
-
-            String token = jwtService.generateTokenForStaff(staff);
-
-            AuthResponse resp = new AuthResponse(
-                    token,
-                    staff.getRole(),
-                    staff.getStaffId(),
-                    staff.getName(),
-                    staff.getEmail()
-            );
-
-            return ResponseEntity.ok(resp);
+        Customer customer = customerService.findByEmail(request.getEmail());
+        if (customer == null) {
+            return new AuthResponse(null, "Invalid email or password", null, null, null);
         }
 
-        Customer cust = customerRepository.findByEmail(req.getEmail()).orElse(null);
-        if (cust == null || !passwordEncoder.matches(req.getPassword(), cust.getPassword())) {
-            return ResponseEntity.status(401).body("Invalid credentials");
+        if (!passwordEncoder.matches(request.getPassword(), customer.getPassword())) {
+            return new AuthResponse(null, "Invalid email or password", null, null, null);
         }
 
-        String token = jwtService.generateTokenForCustomer(cust);
+        // Customer has no role in DB → assign manually
+        String token = jwtService.generateToken(customer.getEmail(), "CUSTOMER", customer.getCustomerId());
 
-        AuthResponse resp = new AuthResponse(
+        return new AuthResponse(
                 token,
+                "CUSTOMER_LOGIN_SUCCESS",
                 "CUSTOMER",
-                cust.getCustomerId(),
-                cust.getName(),
-                cust.getEmail()
+                customer.getName(),
+                customer.getEmail()
         );
+    }
 
-        return ResponseEntity.ok(resp);
+    // -------------------------------------------------------------
+    // Request + Response DTOs
+    // -------------------------------------------------------------
+    @Data
+    public static class LoginRequest {
+        private String email;
+        private String password;
+    }
+
+    @Data
+    @AllArgsConstructor
+    public static class AuthResponse {
+        private String token;
+        private String message;
+        private String role;
+        private String name;
+        private String email;
     }
 }

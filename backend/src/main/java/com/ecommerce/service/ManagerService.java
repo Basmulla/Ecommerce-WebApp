@@ -21,8 +21,8 @@ public class ManagerService {
         return repo.findById(id).orElse(null);
     }
 
-    public Manager create(Manager manager) {
-        return repo.save(manager);
+    public Manager create(Manager m) {
+        return repo.save(m);
     }
 
     public Manager update(Long id, Manager updated) {

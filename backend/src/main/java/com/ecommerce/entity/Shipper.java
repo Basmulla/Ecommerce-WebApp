@@ -7,13 +7,13 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "Shipper")
-@PrimaryKeyJoinColumn(name = "StaffID")
+@Table(name = "SHIPPER")
+@PrimaryKeyJoinColumn(name = "STAFFID")
 public class Shipper extends Staff {
 
-    @Column(name = "VehicleAssigned")
+    @Column(name = "VEHICLEASSIGNED")
     private String vehicleAssigned;
 
-    @Column(name = "ShiftHours")
+    @Column(name = "SHIFTHOURS")
     private String shiftHours;
 }

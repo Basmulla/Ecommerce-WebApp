@@ -1,7 +1,7 @@
 package com.ecommerce.service;
 
-import com.ecommerce.entity.Processor;
-import com.ecommerce.repository.ProcessorRepository;
+import com.ecommerce.entity.Shipper;
+import com.ecommerce.repository.ShipperRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -9,23 +9,23 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class ProcessorService {
+public class ShipperService {
 
-    private final ProcessorRepository repo;
+    private final ShipperRepository repo;
 
-    public List<Processor> getAll() {
+    public List<Shipper> getAll() {
         return repo.findAll();
     }
 
-    public Processor getById(Long id) {
+    public Shipper getById(Long id) {
         return repo.findById(id).orElse(null);
     }
 
-    public Processor create(Processor processor) {
-        return repo.save(processor);
+    public Shipper create(Shipper s) {
+        return repo.save(s);
     }
 
-    public Processor update(Long id, Processor updated) {
+    public Shipper update(Long id, Shipper updated) {
         if (!repo.existsById(id)) return null;
         updated.setStaffId(id);
         return repo.save(updated);

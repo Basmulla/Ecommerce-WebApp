@@ -21,8 +21,8 @@ public class PaymentService {
         return repo.findById(id).orElse(null);
     }
 
-    public Payment create(Payment payment) {
-        return repo.save(payment);
+    public Payment create(Payment p) {
+        return repo.save(p);
     }
 
     public Payment update(Long id, Payment updated) {
@@ -35,10 +35,5 @@ public class PaymentService {
         if (!repo.existsById(id)) return false;
         repo.deleteById(id);
         return true;
-    }
-
-    /** Additional helper — find by Order ID */
-    public Payment getByOrderId(Long orderId) {
-        return repo.findByOrder_OrderId(orderId);
     }
 }

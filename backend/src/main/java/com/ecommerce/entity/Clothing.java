@@ -7,16 +7,16 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "Clothing")
-@PrimaryKeyJoinColumn(name = "ProductID")
+@Table(name = "CLOTHING")
+@PrimaryKeyJoinColumn(name = "PRODUCTID")
 public class Clothing extends Product {
 
-    @Column(name = "SizeLabel")
+    @Column(name = "SIZELABEL")
     private String sizeLabel;
 
-    @Column(name = "Material")
+    @Column(name = "MATERIAL")
     private String material;
 
-    @Column(name = "GenderCategory")
+    @Column(name = "GENDERCATEGORY")
     private String genderCategory;
 }

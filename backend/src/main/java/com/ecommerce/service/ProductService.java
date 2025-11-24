@@ -21,8 +21,8 @@ public class ProductService {
         return repo.findById(id).orElse(null);
     }
 
-    public Product create(Product p) {
-        return repo.save(p);
+    public Product create(Product product) {
+        return repo.save(product);
     }
 
     public Product update(Long id, Product updated) {
@@ -35,23 +35,5 @@ public class ProductService {
         if (!repo.existsById(id)) return false;
         repo.deleteById(id);
         return true;
-    }
-
-    /* ---- Filtering ---- */
-
-    public List<Product> getByBrand(String brand) {
-        return repo.findByBrand(brand);
-    }
-
-    public List<Product> getActiveProducts() {
-        return repo.findByIsActive("Y");
-    }
-
-    public List<Product> getInactiveProducts() {
-        return repo.findByIsActive("N");
-    }
-
-    public List<Product> getProductsByStaff(Long staffId) {
-        return repo.findByStaff_StaffId(staffId);
     }
 }

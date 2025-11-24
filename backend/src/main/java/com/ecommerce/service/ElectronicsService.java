@@ -36,9 +36,4 @@ public class ElectronicsService {
         repo.deleteById(id);
         return true;
     }
-
-    /* Filters */
-    public List<Electronics> findByWarranty(String warranty) {
-        return repo.findByWarrantyPeriod(warranty);
-    }
 }

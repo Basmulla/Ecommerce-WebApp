@@ -8,27 +8,27 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "Orders")
+@Table(name = "ORDERS")
 public class Orders {
 
     @Id
-    @Column(name = "OrderID")
+    @Column(name = "ORDERID")
     private Long orderId;
 
     @ManyToOne
-    @JoinColumn(name = "CustomerID")
+    @JoinColumn(name = "CUSTOMERID")
     private Customer customer;
 
-    @Column(name = "OrderDate")
+    @ManyToOne
+    @JoinColumn(name = "STAFFID")
+    private Staff staff;
+
+    @Column(name = "ORDERDATE")
     private Date orderDate;
 
-    @Column(name = "Status")
+    @Column(name = "STATUS")
     private String status;
 
-    @Column(name = "OrderTotal")
+    @Column(name = "ORDERTOTAL")
     private Double orderTotal;
-
-    @ManyToOne
-    @JoinColumn(name = "StaffID")
-    private Staff staff;
 }

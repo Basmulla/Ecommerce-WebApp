@@ -19,7 +19,7 @@ public class Staff {
     private String name;
 
     @Column(name = "ROLE", nullable = false)
-    private String role;
+    private String role; // Manager / Processor / Shipper
 
     @Column(name = "EMAIL")
     private String email;
@@ -27,3 +27,4 @@ public class Staff {
     @Column(name = "PASSWORD", nullable = false)
     private String password;
 }
+	

@@ -21,8 +21,8 @@ public class OrdersService {
         return repo.findById(id).orElse(null);
     }
 
-    public Orders create(Orders order) {
-        return repo.save(order);
+    public Orders create(Orders o) {
+        return repo.save(o);
     }
 
     public Orders update(Long id, Orders updated) {
@@ -35,14 +35,5 @@ public class OrdersService {
         if (!repo.existsById(id)) return false;
         repo.deleteById(id);
         return true;
-    }
-
-    /** Additional helpers */
-    public List<Orders> getOrdersByCustomer(Long customerId) {
-        return repo.findByCustomer_CustomerId(customerId);
-    }
-
-    public List<Orders> getOrdersByStatus(String status) {
-        return repo.findByStatus(status);
     }
 }

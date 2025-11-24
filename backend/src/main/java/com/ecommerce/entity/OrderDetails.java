@@ -7,24 +7,24 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "OrderDetails")
+@Table(name = "ORDERDETAILS")
 public class OrderDetails {
 
     @Id
-    @Column(name = "OrderDetailID")
+    @Column(name = "ORDERDETAILID")
     private Long orderDetailId;
 
     @ManyToOne
-    @JoinColumn(name = "OrderID")
+    @JoinColumn(name = "ORDERID")
     private Orders order;
 
     @ManyToOne
-    @JoinColumn(name = "ProductID")
+    @JoinColumn(name = "PRODUCTID")
     private Product product;
 
-    @Column(name = "Quantity")
+    @Column(name = "QUANTITY")
     private Integer quantity;
 
-    @Column(name = "PurchasePrice")
+    @Column(name = "PURCHASEPRICE")
     private Double purchasePrice;
 }

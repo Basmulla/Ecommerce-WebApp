@@ -21,8 +21,8 @@ public class ProcessorService {
         return repo.findById(id).orElse(null);
     }
 
-    public Processor create(Processor processor) {
-        return repo.save(processor);
+    public Processor create(Processor p) {
+        return repo.save(p);
     }
 
     public Processor update(Long id, Processor updated) {

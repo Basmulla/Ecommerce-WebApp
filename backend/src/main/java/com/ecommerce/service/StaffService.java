@@ -3,6 +3,7 @@ package com.ecommerce.service;
 import com.ecommerce.entity.Staff;
 import com.ecommerce.repository.StaffRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,8 +22,13 @@ public class StaffService {
         return repo.findById(id).orElse(null);
     }
 
-    public Staff create(Staff staff) {
-        return repo.save(staff);
+    public Staff getByEmail(String email) {
+        return repo.findByEmail(email);
+    }
+
+    public Staff create(Staff s) {
+        s.setPassword(BCrypt.hashpw(s.getPassword(), BCrypt.gensalt()));
+        return repo.save(s);
     }
 
     public Staff update(Long id, Staff updated) {

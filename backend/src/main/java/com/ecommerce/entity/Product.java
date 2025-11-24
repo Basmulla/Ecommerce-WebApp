@@ -7,33 +7,33 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "Product")
+@Table(name = "PRODUCT")
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Product {
 
     @Id
-    @Column(name = "ProductID")
+    @Column(name = "PRODUCTID")
     private Long productId;
 
-    @Column(name = "Name", nullable = false)
+    @Column(name = "NAME", nullable = false)
     private String name;
 
-    @Column(name = "Description")
+    @Column(name = "DESCRIPTION")
     private String description;
 
-    @Column(name = "Price", nullable = false)
+    @Column(name = "PRICE", nullable = false)
     private Double price;
 
-    @Column(name = "Brand")
+    @Column(name = "BRAND")
     private String brand;
 
-    @Column(name = "StockQuantity")
+    @Column(name = "STOCKQUANTITY")
     private Integer stockQuantity;
 
-    @Column(name = "IsActive")
-    private String isActive;
+    @Column(name = "ISACTIVE")
+    private String isActive; // "Y" or "N"
 
     @ManyToOne
-    @JoinColumn(name = "StaffID")
+    @JoinColumn(name = "STAFFID")
     private Staff staff;
 }

@@ -1,6 +1,7 @@
 /class-service/batekull/Ecommerce-WebApp/backend/src/main/java/com/ecommerce/controller/ProductController.java
 /class-service/batekull/Ecommerce-WebApp/backend/src/main/java/com/ecommerce/entity/Payment.java
 /class-service/batekull/Ecommerce-WebApp/backend/src/main/java/com/ecommerce/controller/OrdersController.java
+/class-service/batekull/Ecommerce-WebApp/backend/src/main/java/com/ecommerce/security/SecurityConfig.java
 /class-service/batekull/Ecommerce-WebApp/backend/src/main/java/com/ecommerce/service/ShippingService.java
 /class-service/batekull/Ecommerce-WebApp/backend/src/main/java/com/ecommerce/repository/OrderDetailsRepository.java
 /class-service/batekull/Ecommerce-WebApp/backend/src/main/java/com/ecommerce/repository/ShippingRepository.java
@@ -8,6 +9,7 @@
 /class-service/batekull/Ecommerce-WebApp/backend/src/main/java/com/ecommerce/service/Processor.java
 /class-service/batekull/Ecommerce-WebApp/backend/src/main/java/com/ecommerce/service/ProductService.java
 /class-service/batekull/Ecommerce-WebApp/backend/src/main/java/com/ecommerce/repository/StaffRepository.java
+/class-service/batekull/Ecommerce-WebApp/backend/src/main/java/com/ecommerce/security/JwtService.java
 /class-service/batekull/Ecommerce-WebApp/backend/src/main/java/com/ecommerce/service/CustomerService.java
 /class-service/batekull/Ecommerce-WebApp/backend/src/main/java/com/ecommerce/repository/BooksRepository.java
 /class-service/batekull/Ecommerce-WebApp/backend/src/main/java/com/ecommerce/service/StaffService.java
@@ -24,7 +26,9 @@
 /class-service/batekull/Ecommerce-WebApp/backend/src/main/java/com/ecommerce/repository/ManagerRepository.java
 /class-service/batekull/Ecommerce-WebApp/backend/src/main/java/com/ecommerce/service/OrdersService.java
 /class-service/batekull/Ecommerce-WebApp/backend/src/main/java/com/ecommerce/entity/Shipping.java
+/class-service/batekull/Ecommerce-WebApp/backend/src/main/java/com/ecommerce/dto/LoginRequest.java
 /class-service/batekull/Ecommerce-WebApp/backend/src/main/java/com/ecommerce/service/PaymentService.java
+/class-service/batekull/Ecommerce-WebApp/backend/src/main/java/com/ecommerce/dto/AuthResponse.java
 /class-service/batekull/Ecommerce-WebApp/backend/src/main/java/com/ecommerce/entity/Electronics.java
 /class-service/batekull/Ecommerce-WebApp/backend/src/main/java/com/ecommerce/repository/PaymentRepository.java
 /class-service/batekull/Ecommerce-WebApp/backend/src/main/java/com/ecommerce/repository/ProcessorRepository.java
@@ -44,6 +48,7 @@
 /class-service/batekull/Ecommerce-WebApp/backend/src/main/java/com/ecommerce/entity/Processor.java
 /class-service/batekull/Ecommerce-WebApp/backend/src/main/java/com/ecommerce/service/ManagerService.java
 /class-service/batekull/Ecommerce-WebApp/backend/src/main/java/com/ecommerce/entity/Staff.java
+/class-service/batekull/Ecommerce-WebApp/backend/src/main/java/com/ecommerce/controller/AuthController.java
 /class-service/batekull/Ecommerce-WebApp/backend/src/main/java/com/ecommerce/controller/OrderDetailsController.java
 /class-service/batekull/Ecommerce-WebApp/backend/src/main/java/com/ecommerce/entity/Product.java
 /class-service/batekull/Ecommerce-WebApp/backend/src/main/java/com/ecommerce/entity/Customer.java

@@ -8,26 +8,26 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "Shipping")
+@Table(name = "SHIPPING")
 public class Shipping {
 
     @Id
-    @Column(name = "ShippingID")
+    @Column(name = "SHIPPINGID")
     private Long shippingId;
 
     @OneToOne
-    @JoinColumn(name = "OrderID")
+    @JoinColumn(name = "ORDERID")
     private Orders order;
 
-    @Column(name = "Courier")
+    @Column(name = "COURIER")
     private String courier;
 
-    @Column(name = "TrackingNum")
+    @Column(name = "TRACKINGNUM")
     private String trackingNum;
 
-    @Column(name = "DeliveryDate")
+    @Column(name = "DELIVERYDATE")
     private Date deliveryDate;
 
-    @Column(name = "Status")
+    @Column(name = "STATUS")
     private String status;
 }

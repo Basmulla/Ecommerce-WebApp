@@ -7,16 +7,16 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "Books")
-@PrimaryKeyJoinColumn(name = "ProductID")
+@Table(name = "BOOKS")
+@PrimaryKeyJoinColumn(name = "PRODUCTID")
 public class Books extends Product {
 
     @Column(name = "ISBN")
     private String isbn;
 
-    @Column(name = "Author")
+    @Column(name = "AUTHOR")
     private String author;
 
-    @Column(name = "Publisher")
+    @Column(name = "PUBLISHER")
     private String publisher;
 }
