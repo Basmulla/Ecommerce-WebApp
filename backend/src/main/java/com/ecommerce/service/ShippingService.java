@@ -2,26 +2,23 @@ package com.ecommerce.service;
 
 import com.ecommerce.entity.Shipping;
 import com.ecommerce.repository.ShippingRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class ShippingService {
 
     private final ShippingRepository repo;
-
-    public ShippingService(ShippingRepository repo) {
-        this.repo = repo;
-    }
 
     public List<Shipping> getAll() {
         return repo.findAll();
     }
 
-    public Optional<Shipping> getById(Long id) {
-        return repo.findById(id);
+    public Shipping getById(Long id) {
+        return repo.findById(id).orElse(null);
     }
 
     public Shipping create(Shipping shipping) {
@@ -29,16 +26,19 @@ public class ShippingService {
     }
 
     public Shipping update(Long id, Shipping updated) {
-        return repo.findById(id).map(existing -> {
-            existing.setCourier(updated.getCourier());
-            existing.setTrackingNum(updated.getTrackingNum());
-            existing.setDeliveryDate(updated.getDeliveryDate());
-            existing.setStatus(updated.getStatus());
-            return repo.save(existing);
-        }).orElse(null);
+        if (!repo.existsById(id)) return null;
+        updated.setShippingId(id);
+        return repo.save(updated);
     }
 
-    public void delete(Long id) {
+    public boolean delete(Long id) {
+        if (!repo.existsById(id)) return false;
         repo.deleteById(id);
+        return true;
+    }
+
+    /** Get shipping info related to an order */
+    public Shipping getByOrderId(Long orderId) {
+        return repo.findByOrder_OrderId(orderId);
     }
 }

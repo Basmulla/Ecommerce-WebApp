@@ -1,20 +1,22 @@
 package com.ecommerce.entity;
 
+import lombok.*;
 import javax.persistence.*;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
-@Table(name = "MANAGER")
-@PrimaryKeyJoinColumn(name = "STAFFID")
+@Table(name = "Manager")
+@PrimaryKeyJoinColumn(name = "StaffId")
 public class Manager extends Staff {
 
-    @Column(name = "OFFICENUMBER")
-    private Long officeNumber;
+    @Column(name ="OfficeNumber")
+    private Integer officeNumber;
 
-    @Column(name = "SALARY")
+    @Column(name = "Salary")
     private Double salary;
 
-    @Column(name = "YEARSEXPERIENCE")
+    @Column(name = "YearsExpereience")
     private Integer yearsExperience;
-
-    // Getters & setters
 }

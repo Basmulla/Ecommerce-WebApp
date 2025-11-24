@@ -1,27 +1,34 @@
+package com.ecommerce.entity;
+
+import lombok.*;
+import javax.persistence.*;
+import java.util.Date;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
-@Table(name = "ORDERS")
+@Table(name = "Orders")
 public class Orders {
 
     @Id
-    @Column(name = "ORDERID")
+    @Column(name = "OrderID")
     private Long orderId;
 
     @ManyToOne
-    @JoinColumn(name = "CUSTOMERID")
+    @JoinColumn(name = "CustomerID")
     private Customer customer;
 
-    @Column(name = "ORDERDATE")
-    private java.sql.Date orderDate;
+    @Column(name = "OrderDate")
+    private Date orderDate;
 
-    @Column(name = "STATUS")
+    @Column(name = "Status")
     private String status;
 
-    @Column(name = "ORDERTOTAL")
+    @Column(name = "OrderTotal")
     private Double orderTotal;
 
     @ManyToOne
-    @JoinColumn(name = "STAFFID")
+    @JoinColumn(name = "StaffID")
     private Staff staff;
-
-    // Getters + setters
 }

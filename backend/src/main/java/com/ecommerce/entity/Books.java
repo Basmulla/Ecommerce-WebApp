@@ -1,16 +1,22 @@
+package com.ecommerce.entity;
+
+import lombok.*;
+import javax.persistence.*;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
-@Table(name = "BOOKS")
-@PrimaryKeyJoinColumn(name = "PRODUCTID")
+@Table(name = "Books")
+@PrimaryKeyJoinColumn(name = "ProductID")
 public class Books extends Product {
 
     @Column(name = "ISBN")
     private String isbn;
 
-    @Column(name = "AUTHOR")
+    @Column(name = "Author")
     private String author;
 
-    @Column(name = "PUBLISHER")
+    @Column(name = "Publisher")
     private String publisher;
-
-    // Getters + setters
 }

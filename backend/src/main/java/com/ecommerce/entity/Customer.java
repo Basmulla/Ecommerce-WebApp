@@ -1,7 +1,11 @@
 package com.ecommerce.entity;
 
+import lombok.*;
 import javax.persistence.*;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "CUSTOMER")
 public class Customer {
@@ -22,5 +26,6 @@ public class Customer {
     @Column(name = "ADDRESS")
     private String address;
 
-    // Getters & setters
+    @Column(name = "PASSWORD", nullable = false)
+    private String password;
 }

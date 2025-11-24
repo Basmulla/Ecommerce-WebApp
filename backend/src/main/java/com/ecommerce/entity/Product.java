@@ -1,37 +1,39 @@
 package com.ecommerce.entity;
 
+import lombok.*;
 import javax.persistence.*;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
-@Table(name = "PRODUCT")
+@Table(name = "Product")
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Product {
 
     @Id
-    @Column(name = "PRODUCTID")
+    @Column(name = "ProductID")
     private Long productId;
 
-    @Column(name = "NAME", nullable = false)
+    @Column(name = "Name", nullable = false)
     private String name;
 
-    @Column(name = "DESCRIPTION")
+    @Column(name = "Description")
     private String description;
 
-    @Column(name = "PRICE", nullable = false)
+    @Column(name = "Price", nullable = false)
     private Double price;
 
-    @Column(name = "BRAND")
+    @Column(name = "Brand")
     private String brand;
 
-    @Column(name = "STOCKQUANTITY")
+    @Column(name = "StockQuantity")
     private Integer stockQuantity;
 
-    @Column(name = "ISACTIVE")
+    @Column(name = "IsActive")
     private String isActive;
 
     @ManyToOne
-    @JoinColumn(name = "STAFFID")
+    @JoinColumn(name = "StaffID")
     private Staff staff;
-
-    // Getters + setters
 }

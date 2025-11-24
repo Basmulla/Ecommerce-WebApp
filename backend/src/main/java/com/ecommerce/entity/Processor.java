@@ -1,17 +1,19 @@
 package com.ecommerce.entity;
 
+import lombok.*;
 import javax.persistence.*;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
-@Table(name = "PROCESSOR")
-@PrimaryKeyJoinColumn(name = "STAFFID")
+@Table(name = "Processor")
+@PrimaryKeyJoinColumn(name = "StaffID")
 public class Processor extends Staff {
 
-    @Column(name = "PROCESSINGSTATION")
+    @Column(name = "ProcessingStation")
     private String processingStation;
 
-    @Column(name = "SHIFTHOURS")
+    @Column(name = "ShiftHours")
     private String shiftHours;
-
-    // Getters & setters
 }

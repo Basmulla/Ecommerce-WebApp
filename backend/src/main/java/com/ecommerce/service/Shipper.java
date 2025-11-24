@@ -1,7 +1,7 @@
 package com.ecommerce.service;
 
-import com.ecommerce.entity.Staff;
-import com.ecommerce.repository.StaffRepository;
+import com.ecommerce.entity.Processor;
+import com.ecommerce.repository.ProcessorRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -9,23 +9,23 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class StaffService {
+public class ProcessorService {
 
-    private final StaffRepository repo;
+    private final ProcessorRepository repo;
 
-    public List<Staff> getAll() {
+    public List<Processor> getAll() {
         return repo.findAll();
     }
 
-    public Staff getById(Long id) {
+    public Processor getById(Long id) {
         return repo.findById(id).orElse(null);
     }
 
-    public Staff create(Staff staff) {
-        return repo.save(staff);
+    public Processor create(Processor processor) {
+        return repo.save(processor);
     }
 
-    public Staff update(Long id, Staff updated) {
+    public Processor update(Long id, Processor updated) {
         if (!repo.existsById(id)) return null;
         updated.setStaffId(id);
         return repo.save(updated);

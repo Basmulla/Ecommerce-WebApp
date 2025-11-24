@@ -1,24 +1,30 @@
+package com.ecommerce.entity;
+
+import lombok.*;
+import javax.persistence.*;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
-@Table(name = "ORDERDETAILS")
+@Table(name = "OrderDetails")
 public class OrderDetails {
 
     @Id
-    @Column(name = "ORDERDETAILID")
+    @Column(name = "OrderDetailID")
     private Long orderDetailId;
 
     @ManyToOne
-    @JoinColumn(name = "ORDERID")
+    @JoinColumn(name = "OrderID")
     private Orders order;
 
     @ManyToOne
-    @JoinColumn(name = "PRODUCTID")
+    @JoinColumn(name = "ProductID")
     private Product product;
 
-    @Column(name = "QUANTITY")
+    @Column(name = "Quantity")
     private Integer quantity;
 
-    @Column(name = "PURCHASEPRICE")
+    @Column(name = "PurchasePrice")
     private Double purchasePrice;
-
-    // Getters + setters
 }

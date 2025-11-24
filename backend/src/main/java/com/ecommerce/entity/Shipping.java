@@ -1,26 +1,33 @@
+package com.ecommerce.entity;
+
+import lombok.*;
+import javax.persistence.*;
+import java.util.Date;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
-@Table(name = "SHIPPING")
+@Table(name = "Shipping")
 public class Shipping {
 
     @Id
-    @Column(name = "SHIPPINGID")
+    @Column(name = "ShippingID")
     private Long shippingId;
 
     @OneToOne
-    @JoinColumn(name = "ORDERID")
+    @JoinColumn(name = "OrderID")
     private Orders order;
 
-    @Column(name = "COURIER")
+    @Column(name = "Courier")
     private String courier;
 
-    @Column(name = "TRACKINGNUM")
+    @Column(name = "TrackingNum")
     private String trackingNum;
 
-    @Column(name = "DELIVERYDATE")
-    private java.sql.Date deliveryDate;
+    @Column(name = "DeliveryDate")
+    private Date deliveryDate;
 
-    @Column(name = "STATUS")
+    @Column(name = "Status")
     private String status;
-
-    // Getters + setters
 }

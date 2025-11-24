@@ -2,42 +2,47 @@ package com.ecommerce.service;
 
 import com.ecommerce.entity.Orders;
 import com.ecommerce.repository.OrdersRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class OrdersService {
 
     private final OrdersRepository repo;
-
-    public OrdersService(OrdersRepository repo) {
-        this.repo = repo;
-    }
 
     public List<Orders> getAll() {
         return repo.findAll();
     }
 
-    public Optional<Orders> getById(Long id) {
-        return repo.findById(id);
+    public Orders getById(Long id) {
+        return repo.findById(id).orElse(null);
     }
 
-    public Orders create(Orders o) {
-        return repo.save(o);
+    public Orders create(Orders order) {
+        return repo.save(order);
     }
 
     public Orders update(Long id, Orders updated) {
-        return repo.findById(id).map(existing -> {
-            existing.setStatus(updated.getStatus());
-            existing.setOrderDate(updated.getOrderDate());
-            existing.setOrderTotal(updated.getOrderTotal());
-            return repo.save(existing);
-        }).orElse(null);
+        if (!repo.existsById(id)) return null;
+        updated.setOrderId(id);
+        return repo.save(updated);
     }
 
-    public void delete(Long id) {
+    public boolean delete(Long id) {
+        if (!repo.existsById(id)) return false;
         repo.deleteById(id);
+        return true;
+    }
+
+    /** Additional helpers */
+    public List<Orders> getOrdersByCustomer(Long customerId) {
+        return repo.findByCustomer_CustomerId(customerId);
+    }
+
+    public List<Orders> getOrdersByStatus(String status) {
+        return repo.findByStatus(status);
     }
 }

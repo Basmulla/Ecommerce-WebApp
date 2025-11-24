@@ -2,45 +2,32 @@ package com.ecommerce.service;
 
 import com.ecommerce.entity.Customer;
 import com.ecommerce.repository.CustomerRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class CustomerService {
 
-    private final CustomerRepository customerRepository;
+    private final CustomerRepository repo;
 
-    public CustomerService(CustomerRepository customerRepository) {
-        this.customerRepository = customerRepository;
+    public List<Customer> getAll() { return repo.findAll(); }
+
+    public Customer getById(Long id) { return repo.findById(id).orElse(null); }
+
+    public Customer create(Customer c) { return repo.save(c); }
+
+    public Customer update(Long id, Customer c) {
+        if (!repo.existsById(id)) return null;
+        c.setCustomerId(id);
+        return repo.save(c);
     }
 
-    public List<Customer> getAll() {
-        return customerRepository.findAll();
-    }
-
-    public Optional<Customer> getById(Long id) {
-        return customerRepository.findById(id);
-    }
-
-    public Customer create(Customer customer) {
-        return customerRepository.save(customer);
-    }
-
-    public Customer update(Long id, Customer updatedCustomer) {
-        return customerRepository.findById(id)
-                .map(existing -> {
-                    existing.setName(updatedCustomer.getName());
-                    existing.setEmail(updatedCustomer.getEmail());
-                    existing.setPhone(updatedCustomer.getPhone());
-                    existing.setAddress(updatedCustomer.getAddress());
-                    return customerRepository.save(existing);
-                })
-                .orElse(null);
-    }
-
-    public void delete(Long id) {
-        customerRepository.deleteById(id);
+    public boolean delete(Long id) {
+        if (!repo.existsById(id)) return false;
+        repo.deleteById(id);
+        return true;
     }
 }

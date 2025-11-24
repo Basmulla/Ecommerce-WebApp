@@ -1,7 +1,11 @@
 package com.ecommerce.entity;
 
+import lombok.*;
 import javax.persistence.*;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "STAFF")
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -20,16 +24,6 @@ public class Staff {
     @Column(name = "EMAIL")
     private String email;
 
-    // Getters + setters
-    public Long getStaffId() { return staffId; }
-    public void setStaffId(Long staffId) { this.staffId = staffId; }
-
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
-
-    public String getRole() { return role; }
-    public void setRole(String role) { this.role = role; }
-
-    public String getEmail() { return email; }
-    public void setEmail(String email) { this.email = email; }
+    @Column(name = "PASSWORD", nullable = false)
+    private String password;
 }

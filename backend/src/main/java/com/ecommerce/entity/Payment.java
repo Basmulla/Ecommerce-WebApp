@@ -1,23 +1,30 @@
+package com.ecommerce.entity;
+
+import lombok.*;
+import javax.persistence.*;
+import java.util.Date;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
-@Table(name = "PAYMENT")
+@Table(name = "Payment")
 public class Payment {
 
     @Id
-    @Column(name = "PAYMENTID")
+    @Column(name = "PaymentID")
     private Long paymentId;
 
     @OneToOne
-    @JoinColumn(name = "ORDERID")
+    @JoinColumn(name = "OrderID")
     private Orders order;
 
-    @Column(name = "PAYMENTMETHOD")
+    @Column(name = "PaymentMethod")
     private String paymentMethod;
 
-    @Column(name = "AMOUNT")
+    @Column(name = "Amount")
     private Double amount;
 
-    @Column(name = "DATEPAID")
-    private java.sql.Date datePaid;
-
-    // Getters + setters
+    @Column(name = "DatePaid")
+    private Date datePaid;
 }

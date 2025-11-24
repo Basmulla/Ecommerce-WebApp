@@ -2,26 +2,23 @@ package com.ecommerce.service;
 
 import com.ecommerce.entity.Product;
 import com.ecommerce.repository.ProductRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class ProductService {
 
     private final ProductRepository repo;
-
-    public ProductService(ProductRepository repo) {
-        this.repo = repo;
-    }
 
     public List<Product> getAll() {
         return repo.findAll();
     }
 
-    public Optional<Product> getById(Long id) {
-        return repo.findById(id);
+    public Product getById(Long id) {
+        return repo.findById(id).orElse(null);
     }
 
     public Product create(Product p) {
@@ -29,18 +26,32 @@ public class ProductService {
     }
 
     public Product update(Long id, Product updated) {
-        return repo.findById(id).map(existing -> {
-            existing.setName(updated.getName());
-            existing.setDescription(updated.getDescription());
-            existing.setPrice(updated.getPrice());
-            existing.setBrand(updated.getBrand());
-            existing.setStockQuantity(updated.getStockQuantity());
-            existing.setIsActive(updated.getIsActive());
-            return repo.save(existing);
-        }).orElse(null);
+        if (!repo.existsById(id)) return null;
+        updated.setProductId(id);
+        return repo.save(updated);
     }
 
-    public void delete(Long id) {
+    public boolean delete(Long id) {
+        if (!repo.existsById(id)) return false;
         repo.deleteById(id);
+        return true;
+    }
+
+    /* ---- Filtering ---- */
+
+    public List<Product> getByBrand(String brand) {
+        return repo.findByBrand(brand);
+    }
+
+    public List<Product> getActiveProducts() {
+        return repo.findByIsActive("Y");
+    }
+
+    public List<Product> getInactiveProducts() {
+        return repo.findByIsActive("N");
+    }
+
+    public List<Product> getProductsByStaff(Long staffId) {
+        return repo.findByStaff_StaffId(staffId);
     }
 }

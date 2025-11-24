@@ -1,16 +1,22 @@
-Entity
-@Table(name = "CLOTHING")
-@PrimaryKeyJoinColumn(name = "PRODUCTID")
+package com.ecommerce.entity;
+
+import lombok.*;
+import javax.persistence.*;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+@Table(name = "Clothing")
+@PrimaryKeyJoinColumn(name = "ProductID")
 public class Clothing extends Product {
 
-    @Column(name = "SIZELABEL")
+    @Column(name = "SizeLabel")
     private String sizeLabel;
 
-    @Column(name = "MATERIAL")
+    @Column(name = "Material")
     private String material;
 
-    @Column(name = "GENDERCATEGORY")
+    @Column(name = "GenderCategory")
     private String genderCategory;
-
-    // Getters + setters
 }

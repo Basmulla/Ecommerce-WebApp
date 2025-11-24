@@ -1,69 +1,46 @@
-package com.ecommerce.controllers;
+package com.ecommerce.controller;
 
 import com.ecommerce.entity.Customer;
 import com.ecommerce.service.CustomerService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/customers")
-@CrossOrigin("*")
+@RequiredArgsConstructor
 public class CustomerController {
 
-    @Autowired
-    private CustomerService customerService;
+    private final CustomerService customerService;
 
-    // ---------------------------------------------------------
-    // CREATE CUSTOMER
-    // ---------------------------------------------------------
-    @PostMapping("/create")
-    public ResponseEntity<Customer> createCustomer(@RequestBody Customer customer) {
-        Customer saved = customerService.createCustomer(customer);
-        return ResponseEntity.ok(saved);
+    // GET all customers
+    @GetMapping
+    public List<Customer> getAll() {
+        return customerService.getAll();
     }
 
-    // ---------------------------------------------------------
-    // GET ALL CUSTOMERS
-    // ---------------------------------------------------------
-    @GetMapping("/all")
-    public ResponseEntity<List<Customer>> getAllCustomers() {
-        List<Customer> list = customerService.getAllCustomers();
-        return ResponseEntity.ok(list);
-    }
-
-    // ---------------------------------------------------------
-    // GET CUSTOMER BY ID
-    // ---------------------------------------------------------
+    // GET customer by ID
     @GetMapping("/{id}")
-    public ResponseEntity<Customer> getCustomerById(@PathVariable Long id) {
-        Customer c = customerService.getCustomerById(id);
-        if (c == null) return ResponseEntity.notFound().build();
-        return ResponseEntity.ok(c);
+    public Customer getById(@PathVariable Long id) {
+        return customerService.getById(id);
     }
 
-    // ---------------------------------------------------------
-    // UPDATE CUSTOMER
-    // ---------------------------------------------------------
-    @PutMapping("/update/{id}")
-    public ResponseEntity<Customer> updateCustomer(
-            @PathVariable Long id,
-            @RequestBody Customer newData
-    ) {
-        Customer updated = customerService.updateCustomer(id, newData);
-        if (updated == null) return ResponseEntity.notFound().build();
-        return ResponseEntity.ok(updated);
+    // CREATE customer
+    @PostMapping
+    public Customer create(@RequestBody Customer c) {
+        return customerService.create(c);
     }
 
-    // ---------------------------------------------------------
-    // DELETE CUSTOMER
-    // ---------------------------------------------------------
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<String> deleteCustomer(@PathVariable Long id) {
-        boolean ok = customerService.deleteCustomer(id);
-        if (!ok) return ResponseEntity.notFound().build();
-        return ResponseEntity.ok("Customer deleted successfully.");
+    // UPDATE customer
+    @PutMapping("/{id}")
+    public Customer update(@PathVariable Long id, @RequestBody Customer c) {
+        return customerService.update(id, c);
+    }
+
+    // DELETE customer
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable Long id) {
+        customerService.delete(id);
     }
 }
