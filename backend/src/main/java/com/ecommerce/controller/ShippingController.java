@@ -8,34 +8,34 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/shipping")
+@RequestMapping("/shipping")
 @RequiredArgsConstructor
 public class ShippingController {
 
-    private final ShippingService shippingService;
+    private final ShippingService service;
 
     @GetMapping
     public List<Shipping> getAll() {
-        return shippingService.getAll();
+        return service.getAll();
     }
 
     @GetMapping("/{id}")
     public Shipping getById(@PathVariable Long id) {
-        return shippingService.getById(id);
+        return service.getById(id);
     }
 
     @PostMapping
     public Shipping create(@RequestBody Shipping s) {
-        return shippingService.create(s);
+        return service.create(s);
     }
 
     @PutMapping("/{id}")
-    public Shipping update(@PathVariable Long id, @RequestBody Shipping s) {
-        return shippingService.update(id, s);
+    public Shipping update(@PathVariable Long id, @RequestBody Shipping updated) {
+        return service.update(id, updated);
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        shippingService.delete(id);
+    public boolean delete(@PathVariable Long id) {
+        return service.delete(id);
     }
 }

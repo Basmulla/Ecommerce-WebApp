@@ -1,100 +1,94 @@
 package com.ecommerce.controller;
 
-import com.ecommerce.entity.OrderDetails;
-import com.ecommerce.entity.Orders;
-import com.ecommerce.entity.Product;
-import com.ecommerce.service.OrderDetailsService;
-import com.ecommerce.service.OrdersService;
-import com.ecommerce.service.ProductService;
+import com.ecommerce.entity.*;
+import com.ecommerce.service.*;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/checkout")
+@RequestMapping("/checkout")
+@RequiredArgsConstructor
 public class CheckoutController {
 
     private final OrdersService ordersService;
-    private final OrderDetailsService orderDetailsService;
     private final ProductService productService;
+    private final OrderDetailsService orderDetailsService;
 
-    public CheckoutController(
-            OrdersService ordersService,
-            OrderDetailsService orderDetailsService,
-            ProductService productService) {
-
-        this.ordersService = ordersService;
-        this.orderDetailsService = orderDetailsService;
-        this.productService = productService;
-    }
-
-    // ==========================================================
-    // POST /api/checkout
-    // This receives the full cart and performs checkout
-    // ==========================================================
+    // ---------------------------------------------------------------
+    // CHECKOUT
+    // ---------------------------------------------------------------
     @PostMapping
     public CheckoutResponse checkout(@RequestBody CheckoutRequest req) {
 
-        // 1️⃣ Create base order
+        // 1) Create ORDER
         Orders order = new Orders();
-        order.setCustomerID(req.getCustomerId());
+        order.setOrderId(null);  // auto-assigned by DB sequence
         order.setOrderDate(new Date());
-        order.setStatus("PENDING"); // initial status
-        order.setOrderTotal(0.0);   // will update after items
+        order.setStatus("PENDING");
 
+        // Customer reference
+        Customer c = new Customer();
+        c.setCustomerId(req.getCustomerId());
+        order.setCustomer(c);
+
+        // Save order
         Orders savedOrder = ordersService.create(order);
 
-        double total = 0.0;
+        double total = 0;
 
-        // 2️⃣ Loop through all cart items
+        // 2) Process cart items
         for (CartItem item : req.getItems()) {
 
-            Product product = productService.getById(item.getProductId())
-                    .orElseThrow(() -> new RuntimeException("Product not found: " + item.getProductId()));
+            Product product = productService.getById(item.getProductId());
+            if (product == null) continue;
 
             // Validate stock
             if (product.getStockQuantity() < item.getQuantity()) {
-                throw new RuntimeException("Not enough stock for: " + product.getName());
+                throw new RuntimeException("Insufficient stock for product: " + product.getName());
             }
 
-            double price = product.getPrice();
-            double lineTotal = price * item.getQuantity();
-            total += lineTotal;
-
-            // 3️⃣ Create OrderDetails entry
+            // OrderDetails
             OrderDetails od = new OrderDetails();
-            od.setOrderID(savedOrder.getOrderID());
-            od.setProductID(product.getProductID());
+            od.setOrderDetailId(null); // DB sequence
+            od.setOrder(savedOrder);
+            od.setProduct(product);
             od.setQuantity(item.getQuantity());
-            od.setPurchasePrice(price);
+            od.setPurchasePrice(product.getPrice());
 
             orderDetailsService.create(od);
 
-            // 4️⃣ Deduct stock
+            // Update stock
             product.setStockQuantity(product.getStockQuantity() - item.getQuantity());
-            productService.update(product.getProductID(), product);
+            productService.update(product.getProductId(), product);
+
+            // Accumulate total
+            total += product.getPrice() * item.getQuantity();
         }
 
-        // 5️⃣ Update order total
+        // 3) Update order totals
         savedOrder.setOrderTotal(total);
-        savedOrder.setStatus("CREATED"); // after items added
-        ordersService.update(savedOrder.getOrderID(), savedOrder);
+        savedOrder.setStatus("PAID");
+        ordersService.update(savedOrder.getOrderId(), savedOrder);
 
-        // 6️⃣ Return summary
+        // 4) Response
         CheckoutResponse resp = new CheckoutResponse();
-        resp.setOrderId(savedOrder.getOrderID());
-        resp.setCustomerId(savedOrder.getCustomerID());
+        resp.setOrderId(savedOrder.getOrderId());
+        resp.setCustomerId(savedOrder.getCustomer().getCustomerId());
         resp.setTotal(total);
         resp.setStatus(savedOrder.getStatus());
 
         return resp;
     }
 
-    // ==========================================================
-    // Request Body Classes
-    // ==========================================================
+
+    // ===============================================================
+    // DTO CLASSES
+    // ===============================================================
+
     @Data
     public static class CheckoutRequest {
         private Long customerId;
@@ -104,12 +98,9 @@ public class CheckoutController {
     @Data
     public static class CartItem {
         private Long productId;
-        private int quantity;
+        private Integer quantity;
     }
 
-    // ==========================================================
-    // Response Class
-    // ==========================================================
     @Data
     public static class CheckoutResponse {
         private Long orderId;

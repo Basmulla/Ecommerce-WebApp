@@ -8,34 +8,34 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/payments")
+@RequestMapping("/payments")
 @RequiredArgsConstructor
 public class PaymentController {
 
-    private final PaymentService paymentService;
+    private final PaymentService service;
 
     @GetMapping
     public List<Payment> getAll() {
-        return paymentService.getAll();
+        return service.getAll();
     }
 
     @GetMapping("/{id}")
     public Payment getById(@PathVariable Long id) {
-        return paymentService.getById(id);
+        return service.getById(id);
     }
 
     @PostMapping
-    public Payment create(@RequestBody Payment p) {
-        return paymentService.create(p);
+    public Payment create(@RequestBody Payment payment) {
+        return service.create(payment);
     }
 
     @PutMapping("/{id}")
-    public Payment update(@PathVariable Long id, @RequestBody Payment p) {
-        return paymentService.update(id, p);
+    public Payment update(@PathVariable Long id, @RequestBody Payment updated) {
+        return service.update(id, updated);
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        paymentService.delete(id);
+    public boolean delete(@PathVariable Long id) {
+        return service.delete(id);
     }
 }

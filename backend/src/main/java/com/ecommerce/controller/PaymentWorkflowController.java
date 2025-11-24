@@ -1,31 +1,41 @@
 package com.ecommerce.controller;
 
-import com.ecommerce.entity.Product;
-import com.ecommerce.service.ProductService;
+import com.ecommerce.entity.Payment;
+import com.ecommerce.service.PaymentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/browse")
+@RequestMapping("/payments")
 @RequiredArgsConstructor
-public class ProductBrowsingController {
+public class PaymentController {
 
-    private final ProductService productService;
+    private final PaymentService service;
 
-    @GetMapping("/all")
-    public List<Product> getAllProducts() {
-        return productService.getAll();
-    }
-
-    @GetMapping("/brand/{brand}")
-    public List<Product> getByBrand(@PathVariable String brand) {
-        return productService.findByBrand(brand);
+    @GetMapping
+    public List<Payment> getAll() {
+        return service.getAll();
     }
 
     @GetMapping("/{id}")
-    public Product getProduct(@PathVariable Long id) {
-        return productService.getById(id).orElse(null);
+    public Payment getById(@PathVariable Long id) {
+        return service.getById(id);
+    }
+
+    @PostMapping
+    public Payment create(@RequestBody Payment payment) {
+        return service.create(payment);
+    }
+
+    @PutMapping("/{id}")
+    public Payment update(@PathVariable Long id, @RequestBody Payment updated) {
+        return service.update(id, updated);
+    }
+
+    @DeleteMapping("/{id}")
+    public boolean delete(@PathVariable Long id) {
+        return service.delete(id);
     }
 }

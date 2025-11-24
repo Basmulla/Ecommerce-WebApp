@@ -8,34 +8,49 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/orders")
+@RequestMapping("/orders")
 @RequiredArgsConstructor
 public class OrdersController {
 
-    private final OrdersService ordersService;
+    private final OrdersService service;
 
+    // -------------------------------------------------------------
+    // GET ALL ORDERS
+    // -------------------------------------------------------------
     @GetMapping
     public List<Orders> getAll() {
-        return ordersService.getAll();
+        return service.getAll();
     }
 
+    // -------------------------------------------------------------
+    // GET ORDER BY ID
+    // -------------------------------------------------------------
     @GetMapping("/{id}")
     public Orders getById(@PathVariable Long id) {
-        return ordersService.getById(id);
+        return service.getById(id);
     }
 
+    // -------------------------------------------------------------
+    // CREATE ORDER
+    // -------------------------------------------------------------
     @PostMapping
-    public Orders create(@RequestBody Orders o) {
-        return ordersService.create(o);
+    public Orders create(@RequestBody Orders orders) {
+        return service.create(orders);
     }
 
+    // -------------------------------------------------------------
+    // UPDATE ORDER
+    // -------------------------------------------------------------
     @PutMapping("/{id}")
-    public Orders update(@PathVariable Long id, @RequestBody Orders o) {
-        return ordersService.update(id, o);
+    public Orders update(@PathVariable Long id, @RequestBody Orders updated) {
+        return service.update(id, updated);
     }
 
+    // -------------------------------------------------------------
+    // DELETE ORDER
+    // -------------------------------------------------------------
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        ordersService.delete(id);
+    public boolean delete(@PathVariable Long id) {
+        return service.delete(id);
     }
 }

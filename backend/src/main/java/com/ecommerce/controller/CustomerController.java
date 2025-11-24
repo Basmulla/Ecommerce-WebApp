@@ -8,39 +8,49 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/customers")
+@RequestMapping("/customers")
 @RequiredArgsConstructor
 public class CustomerController {
 
-    private final CustomerService customerService;
+    private final CustomerService service;
 
-    // GET all customers
+    // -------------------------------------------------------------
+    // GET ALL
+    // -------------------------------------------------------------
     @GetMapping
     public List<Customer> getAll() {
-        return customerService.getAll();
+        return service.getAll();
     }
 
-    // GET customer by ID
+    // -------------------------------------------------------------
+    // GET BY ID
+    // -------------------------------------------------------------
     @GetMapping("/{id}")
     public Customer getById(@PathVariable Long id) {
-        return customerService.getById(id);
+        return service.getById(id);
     }
 
-    // CREATE customer
+    // -------------------------------------------------------------
+    // CREATE CUSTOMER
+    // -------------------------------------------------------------
     @PostMapping
-    public Customer create(@RequestBody Customer c) {
-        return customerService.create(c);
+    public Customer create(@RequestBody Customer customer) {
+        return service.create(customer);
     }
 
-    // UPDATE customer
+    // -------------------------------------------------------------
+    // UPDATE CUSTOMER
+    // -------------------------------------------------------------
     @PutMapping("/{id}")
-    public Customer update(@PathVariable Long id, @RequestBody Customer c) {
-        return customerService.update(id, c);
+    public Customer update(@PathVariable Long id, @RequestBody Customer updated) {
+        return service.update(id, updated);
     }
 
-    // DELETE customer
+    // -------------------------------------------------------------
+    // DELETE CUSTOMER
+    // -------------------------------------------------------------
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        customerService.delete(id);
+    public boolean delete(@PathVariable Long id) {
+        return service.delete(id);
     }
 }
