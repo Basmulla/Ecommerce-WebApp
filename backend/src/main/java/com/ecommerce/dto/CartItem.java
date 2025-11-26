@@ -3,21 +3,21 @@ package com.ecommerce.dto;
 public class CartItem {
 
     private Long productId;
-    private Integer quantity;
+    private int quantity;
 
     public Long getProductId() {
         return productId;
+    }
+
+    public int getQuantity() {
+        return quantity;
     }
 
     public void setProductId(Long productId) {
         this.productId = productId;
     }
 
-    public Integer getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(Integer quantity) {
+    public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
 }

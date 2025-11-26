@@ -5,8 +5,8 @@ import com.ecommerce.entity.Staff;
 import com.ecommerce.security.JwtService;
 import com.ecommerce.service.CustomerService;
 import com.ecommerce.service.StaffService;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import com.ecommerce.dto.LoginRequest;
+import com.ecommerce.dto.AuthResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +24,7 @@ public class AuthController {
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     // -------------------------------------------------------------
-    // 1. Staff Login
+    // STAFF LOGIN
     // -------------------------------------------------------------
     @PostMapping("/login/staff")
     public AuthResponse staffLogin(@RequestBody LoginRequest request) {
@@ -38,20 +38,23 @@ public class AuthController {
             return new AuthResponse(null, "Invalid email or password", null, null, null);
         }
 
-        // JWT Generation
-        String token = jwtService.generateToken(staff.getEmail(), staff.getRole(), staff.getStaffId());
+        String token = jwtService.generateToken(
+                staff.getEmail(),
+                staff.getRole(),
+                staff.getStaffId()
+        );
 
         return new AuthResponse(
                 token,
-                "STAFF_LOGIN_SUCCESS",
                 staff.getRole(),
+                staff.getStaffId(),
                 staff.getName(),
                 staff.getEmail()
         );
     }
 
     // -------------------------------------------------------------
-    // 2. Customer Login
+    // CUSTOMER LOGIN
     // -------------------------------------------------------------
     @PostMapping("/login/customer")
     public AuthResponse customerLogin(@RequestBody LoginRequest request) {
@@ -65,34 +68,18 @@ public class AuthController {
             return new AuthResponse(null, "Invalid email or password", null, null, null);
         }
 
-        // Customer has no role in DB → assign manually
-        String token = jwtService.generateToken(customer.getEmail(), "CUSTOMER", customer.getCustomerId());
+        String token = jwtService.generateToken(
+                customer.getEmail(),
+                "CUSTOMER",
+                customer.getCustomerId()
+        );
 
         return new AuthResponse(
                 token,
-                "CUSTOMER_LOGIN_SUCCESS",
                 "CUSTOMER",
+                customer.getCustomerId(),
                 customer.getName(),
                 customer.getEmail()
         );
-    }
-
-    // -------------------------------------------------------------
-    // Request + Response DTOs
-    // -------------------------------------------------------------
-    @Data
-    public static class LoginRequest {
-        private String email;
-        private String password;
-    }
-
-    @Data
-    @AllArgsConstructor
-    public static class AuthResponse {
-        private String token;
-        private String message;
-        private String role;
-        private String name;
-        private String email;
     }
 }

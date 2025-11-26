@@ -21,19 +21,15 @@ public class ProductService {
         return repo.findById(id).orElse(null);
     }
 
-    public Product create(Product product) {
-        return repo.save(product);
+    public List<Product> searchByName(String name) {
+        return repo.findByNameContainingIgnoreCase(name);
     }
 
-    public Product update(Long id, Product updated) {
-        if (!repo.existsById(id)) return null;
-        updated.setProductId(id);
-        return repo.save(updated);
+    public List<Product> findByBrand(String brand) {
+        return repo.findByBrandContainingIgnoreCase(brand);
     }
 
-    public boolean delete(Long id) {
-        if (!repo.existsById(id)) return false;
-        repo.deleteById(id);
-        return true;
+    public List<Product> getActive() {
+        return repo.findByIsActive("Y");
     }
 }

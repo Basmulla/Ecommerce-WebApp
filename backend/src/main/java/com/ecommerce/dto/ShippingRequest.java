@@ -13,28 +13,28 @@ public class ShippingRequest {
         return orderId;
     }
 
-    public void setOrderId(Long orderId) {
-        this.orderId = orderId;
-    }
-
     public String getCourier() {
         return courier;
-    }
-
-    public void setCourier(String courier) {
-        this.courier = courier;
     }
 
     public String getTracking() {
         return tracking;
     }
 
-    public void setTracking(String tracking) {
-        this.tracking = tracking;
-    }
-
     public Date getDeliveryDate() {
         return deliveryDate;
+    }
+
+    public void setOrderId(Long orderId) {
+        this.orderId = orderId;
+    }
+
+    public void setCourier(String courier) {
+        this.courier = courier;
+    }
+
+    public void setTracking(String tracking) {
+        this.tracking = tracking;
     }
 
     public void setDeliveryDate(Date deliveryDate) {
