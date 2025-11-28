@@ -16,6 +16,7 @@ public class ProductService {
     private final ElectronicsRepository electronicsRepo;
     private final ClothingRepository clothingRepo;
 
+    // BASE CRUD
     public List<Product> getAll() {
         return repo.findAll();
     }
@@ -24,40 +25,31 @@ public class ProductService {
         return repo.findById(id).orElse(null);
     }
 
-<<<<<<< HEAD
     public Product create(Product p) {
         return repo.save(p);
     }
 
-    public Books createBook(Books b) {
-        return booksRepo.save(b);
+    public Product update(Long id, Product updated) {
+        Product existing = repo.findById(id).orElse(null);
+        if (existing == null) return null;
+
+        existing.setName(updated.getName());
+        existing.setBrand(updated.getBrand());
+        existing.setPrice(updated.getPrice());
+        existing.setActive(updated.isActive());
+        existing.setCategory(updated.getCategory());
+
+        return repo.save(existing);
     }
 
-    public Clothing createClothing(Clothing c) {
-        return clothingRepo.save(c);
+    public boolean delete(Long id) {
+        if (!repo.existsById(id)) return false;
+        repo.deleteById(id);
+        return true;
     }
 
-    public Electronics createElectronics(Electronics e) {
-        return electronicsRepo.save(e);
-    }
 
-    public Books getBook(Long id) {
-        return booksRepo.findById(id).orElse(null);
-    }
-
-    public Clothing getClothing(Long id) {
-        return clothingRepo.findById(id).orElse(null);
-    }
-
-    public Electronics getElectronics(Long id) {
-        return electronicsRepo.findById(id).orElse(null);
-    }
-
-    // Dummy implementation since you have no staff-product relationship
-    public List<Product> getProductsByStaff(Long staffId) {
-        return repo.findAll();
-    }
-
+    // SEARCH & FILTER
     public List<Product> searchByName(String keyword) {
         return repo.findByNameContainingIgnoreCase(keyword);
     }
@@ -68,17 +60,42 @@ public class ProductService {
 
     public List<Product> findByPriceRange(double min, double max) {
         return repo.findByPriceBetween(min, max);
-=======
-    public List<Product> searchByName(String name) {
-        return repo.findByNameContainingIgnoreCase(name);
-    }
-
-    public List<Product> findByBrand(String brand) {
-        return repo.findByBrandContainingIgnoreCase(brand);
     }
 
     public List<Product> getActive() {
-        return repo.findByIsActive("Y");
->>>>>>> 5817c73b4192df607e3271f8efb5a622e47bb16a
+        return repo.findByActiveTrue();
+    }
+
+
+    // CATEGORY SPECIFIC
+    public Books createBook(Books b) {
+        return booksRepo.save(b);
+    }
+
+    public Books getBook(Long id) {
+        return booksRepo.findById(id).orElse(null);
+    }
+
+    public Clothing createClothing(Clothing c) {
+        return clothingRepo.save(c);
+    }
+
+    public Clothing getClothing(Long id) {
+        return clothingRepo.findById(id).orElse(null);
+    }
+
+    public Electronics createElectronics(Electronics e) {
+        return electronicsRepo.save(e);
+    }
+
+    public Electronics getElectronics(Long id) {
+        return electronicsRepo.findById(id).orElse(null);
+    }
+
+
+    // STAFF FILTER (dummy)
+    public List<Product> getProductsByStaff(Long staffId) {
+        // No relationship exists — return all products
+        return repo.findAll();
     }
 }

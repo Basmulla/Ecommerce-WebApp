@@ -17,28 +17,7 @@ public class CustomerService {
         return repo.save(c);
     }
 
-    public List<Customer> getAll() {
-        return repo.findAll();
-    }
-
-    public Customer getById(Long id) {
-        return repo.findById(id).orElse(null);
-    }
-
-    public Customer update(Long id, Customer updated) {
-        Customer c = getById(id);
-        if (c == null) return null;
-
-        c.setName(updated.getName());
-        c.setEmail(updated.getEmail());
-        c.setPassword(updated.getPassword());
-        c.setPhone(updated.getPhone());
-
-        return repo.save(c);
-    }
-
-    public boolean delete(Long id) {
-        repo.deleteById(id);
-        return true;
+    public Customer getByEmail(String email) {
+        return repo.findByEmail(email);
     }
 }

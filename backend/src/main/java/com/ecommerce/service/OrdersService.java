@@ -1,7 +1,7 @@
 package com.ecommerce.service;
 
-import com.ecommerce.entity.OrderDetails;
 import com.ecommerce.entity.Orders;
+import com.ecommerce.entity.OrderDetails;
 import com.ecommerce.repository.OrderDetailsRepository;
 import com.ecommerce.repository.OrdersRepository;
 import lombok.RequiredArgsConstructor;
@@ -13,54 +13,51 @@ import java.util.List;
 @RequiredArgsConstructor
 public class OrdersService {
 
-    private final OrdersRepository repo;
+    private final OrdersRepository ordersRepo;
     private final OrderDetailsRepository detailsRepo;
 
-    public Orders create(Orders o) {
-        o.setStatus("PENDING");
-        o.setTotal(0.0);
-        return repo.save(o);
-    }
-
-    public Orders getById(Long id) {
-        return repo.findById(id).orElse(null);
-    }
-
-    public List<Orders> getAll() {
-        return repo.findAll();
-    }
-
-    public List<Orders> getByCustomer(Long customerId) {
-        return repo.findByCustomerId(customerId);
-    }
-
-    public List<Orders> getByStaff(Long staffId) {
-        return repo.findByStaffId(staffId);
+    public Orders create(Orders order) {
+        return ordersRepo.save(order);
     }
 
     public OrderDetails addItem(OrderDetails item) {
         return detailsRepo.save(item);
     }
 
-    public Orders updateStatus(Long id, String status) {
-        Orders o = getById(id);
-        if (o == null) return null;
-
-        o.setStatus(status);
-        return repo.save(o);
-    }
-
     public Orders calculateTotal(Long orderId) {
-        Orders o = getById(orderId);
-        if (o == null) return null;
+        Orders order = ordersRepo.findById(orderId).orElse(null);
+        if (order == null) return null;
 
-        List<OrderDetails> items = detailsRepo.findByOrderId(orderId);
-
-        double total = items.stream()
-                .mapToDouble(i -> i.getPrice() * i.getQuantity())
+        double total = detailsRepo.findByOrderId(orderId)
+                .stream()
+                .mapToDouble(OrderDetails::getSubtotal)
                 .sum();
 
-        o.setTotal(total);
-        return repo.save(o);
+        order.setTotal(total);
+        return ordersRepo.save(order);
+    }
+
+    public Orders updateStatus(Long orderId, String status) {
+        Orders order = ordersRepo.findById(orderId).orElse(null);
+        if (order == null) return null;
+
+        order.setStatus(status);
+        return ordersRepo.save(order);
+    }
+
+    public Orders getFullOrder(Long id) {
+        return ordersRepo.findById(id).orElse(null);
+    }
+
+    public List<Orders> getAll() {
+        return ordersRepo.findAll();
+    }
+
+    public List<Orders> getOrdersByCustomer(Long id) {
+        return ordersRepo.findByCustomerId(id);
+    }
+
+    public List<Orders> getOrdersByStaff(Long id) {
+        return ordersRepo.findByStaffId(id);
     }
 }

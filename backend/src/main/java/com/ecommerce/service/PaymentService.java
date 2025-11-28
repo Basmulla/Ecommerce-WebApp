@@ -1,6 +1,5 @@
 package com.ecommerce.service;
 
-import com.ecommerce.dto.PaymentRequest;
 import com.ecommerce.entity.Payment;
 import com.ecommerce.repository.PaymentRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,14 +13,7 @@ public class PaymentService {
 
     private final PaymentRepository repo;
 
-    public Payment processPayment(PaymentRequest req) {
-
-        Payment p = new Payment();
-        p.setOrderId(req.getOrderId());
-        p.setMethod(req.getMethod());
-        p.setAmount(req.getAmount());
-        p.setStaffId(req.getStaffId());
-
+    public Payment create(Payment p) {
         return repo.save(p);
     }
 
@@ -34,17 +26,18 @@ public class PaymentService {
     }
 
     public Payment update(Long id, Payment updated) {
-        Payment p = getById(id);
+        Payment p = repo.findById(id).orElse(null);
         if (p == null) return null;
 
-        p.setMethod(updated.getMethod());
         p.setAmount(updated.getAmount());
-        p.setStaffId(updated.getStaffId());
+        p.setMethod(updated.getMethod());
+        p.setStatus(updated.getStatus());
 
         return repo.save(p);
     }
 
     public boolean delete(Long id) {
+        if (!repo.existsById(id)) return false;
         repo.deleteById(id);
         return true;
     }
