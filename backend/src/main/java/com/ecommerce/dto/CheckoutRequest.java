@@ -11,6 +11,7 @@ public class CheckoutRequest {
     public Long getCustomerId() {
         return customerId;
     }
+
     public void setCustomerId(Long customerId) {
         this.customerId = customerId;
     }
@@ -18,6 +19,7 @@ public class CheckoutRequest {
     public Long getStaffId() {
         return staffId;
     }
+
     public void setStaffId(Long staffId) {
         this.staffId = staffId;
     }
@@ -25,6 +27,7 @@ public class CheckoutRequest {
     public List<CartItem> getCartItems() {
         return cartItems;
     }
+
     public void setCartItems(List<CartItem> cartItems) {
         this.cartItems = cartItems;
     }

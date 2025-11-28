@@ -24,6 +24,7 @@ public class ProductService {
         return repo.findById(id).orElse(null);
     }
 
+<<<<<<< HEAD
     public Product create(Product p) {
         return repo.save(p);
     }
@@ -67,5 +68,17 @@ public class ProductService {
 
     public List<Product> findByPriceRange(double min, double max) {
         return repo.findByPriceBetween(min, max);
+=======
+    public List<Product> searchByName(String name) {
+        return repo.findByNameContainingIgnoreCase(name);
+    }
+
+    public List<Product> findByBrand(String brand) {
+        return repo.findByBrandContainingIgnoreCase(brand);
+    }
+
+    public List<Product> getActive() {
+        return repo.findByIsActive("Y");
+>>>>>>> 5817c73b4192df607e3271f8efb5a622e47bb16a
     }
 }

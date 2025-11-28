@@ -2,11 +2,18 @@ package com.ecommerce.repository;
 
 import com.ecommerce.entity.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
 import java.util.List;
 
+@Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
+
     List<Product> findByNameContainingIgnoreCase(String keyword);
+
     List<Product> findByBrandIgnoreCase(String brand);
+
     List<Product> findByPriceBetween(double min, double max);
+
     List<Product> findByActiveTrue();
 }

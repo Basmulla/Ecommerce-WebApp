@@ -12,6 +12,7 @@ public class ShippingRequest {
     public Long getOrderId() {
         return orderId;
     }
+
     public void setOrderId(Long orderId) {
         this.orderId = orderId;
     }
@@ -19,6 +20,7 @@ public class ShippingRequest {
     public String getCourier() {
         return courier;
     }
+
     public void setCourier(String courier) {
         this.courier = courier;
     }
@@ -26,6 +28,7 @@ public class ShippingRequest {
     public String getTracking() {
         return tracking;
     }
+
     public void setTracking(String tracking) {
         this.tracking = tracking;
     }
@@ -33,6 +36,7 @@ public class ShippingRequest {
     public Date getDeliveryDate() {
         return deliveryDate;
     }
+
     public void setDeliveryDate(Date deliveryDate) {
         this.deliveryDate = deliveryDate;
     }
