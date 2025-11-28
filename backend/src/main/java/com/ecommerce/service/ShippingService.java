@@ -5,7 +5,7 @@ import com.ecommerce.repository.ShippingRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.sql.Date;
 
 @Service
 @RequiredArgsConstructor
@@ -13,32 +13,56 @@ public class ShippingService {
 
     private final ShippingRepository repo;
 
-    public List<Shipping> getAll() {
-        return repo.findAll();
+    public Shipping create(Shipping s) {
+        return repo.save(s);
     }
 
-    public Shipping getById(Long id) {
-        return repo.findById(id).orElse(null);
+    public Shipping createForOrder(Long orderId) {
+        Shipping s = new Shipping();
+        s.setOrderId(orderId);
+        s.setStatus("PROCESSING");
+        return repo.save(s);
     }
 
-    public Shipping create(Shipping shipping) {
-        return repo.save(shipping);
+    public Shipping getByOrder(Long orderId) {
+        return repo.findByOrderId(orderId);
     }
 
-    public Shipping update(Long id, Shipping updated) {
-        if (!repo.existsById(id)) return null;
-        updated.setShippingId(id);
-        return repo.save(updated);
+    public Shipping updateStatus(Long id, String status) {
+        Shipping s = repo.findById(id).orElse(null);
+        if (s == null) return null;
+
+        s.setStatus(status);
+        return repo.save(s);
+    }
+
+    public Shipping updateTrackingNumber(Long id, String trackingNum) {
+        Shipping s = repo.findById(id).orElse(null);
+        if (s == null) return null;
+
+        s.setTrackingNumber(trackingNum);
+        return repo.save(s);
+    }
+
+    public Shipping markDelivered(Long id, Date delivered) {
+        Shipping s = repo.findById(id).orElse(null);
+        if (s == null) return null;
+
+        s.setStatus("DELIVERED");
+        s.setDateDelivered(delivered);
+        return repo.save(s);
+    }
+
+    public Shipping shipOrder(Long orderId, Long staffId) {
+        Shipping s = getByOrder(orderId);
+        if (s == null) s = createForOrder(orderId);
+
+        s.setStatus("SHIPPED");
+        return repo.save(s);
     }
 
     public boolean delete(Long id) {
-        if (!repo.existsById(id)) return false;
         repo.deleteById(id);
         return true;
-    }
-
-    /** Get shipping info related to an order */
-    public Shipping getByOrderId(Long orderId) {
-        return repo.findByOrder_OrderId(orderId);
     }
 }

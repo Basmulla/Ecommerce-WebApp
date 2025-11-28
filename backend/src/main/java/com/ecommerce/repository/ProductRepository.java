@@ -5,10 +5,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
-
-    List<Product> findByBrand(String brand);
-
-    List<Product> findByIsActive(String isActive);
-
-    List<Product> findByStaff_StaffId(Long staffId);
+    List<Product> findByNameContainingIgnoreCase(String keyword);
+    List<Product> findByBrandIgnoreCase(String brand);
+    List<Product> findByPriceBetween(double min, double max);
+    List<Product> findByActiveTrue();
 }

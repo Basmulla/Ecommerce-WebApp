@@ -1,19 +1,19 @@
 package com.ecommerce.entity;
 
-import lombok.*;
 import javax.persistence.*;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "ELECTRONICS")
-@PrimaryKeyJoinColumn(name = "PRODUCTID")
 public class Electronics extends Product {
 
-    @Column(name = "WARRANTYPERIOD")
-    private String warrantyPeriod;
+    private String specs;
 
-    @Column(name = "POWERRATING")
-    private String powerRating;
+    public Electronics() {}
+
+    public String getSpecs() {
+        return specs;
+    }
+    public void setSpecs(String specs) {
+        this.specs = specs;
+    }
 }

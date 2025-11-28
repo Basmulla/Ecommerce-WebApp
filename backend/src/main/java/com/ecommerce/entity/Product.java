@@ -1,39 +1,55 @@
 package com.ecommerce.entity;
 
-import lombok.*;
 import javax.persistence.*;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
-@Table(name = "PRODUCT")
+@Table(name = "PRODUCTS")
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Product {
 
     @Id
-    @Column(name = "PRODUCTID")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long productId;
 
-    @Column(name = "NAME", nullable = false)
     private String name;
-
-    @Column(name = "DESCRIPTION")
-    private String description;
-
-    @Column(name = "PRICE", nullable = false)
-    private Double price;
-
-    @Column(name = "BRAND")
     private String brand;
+    private Double price;
+    private boolean active;
 
-    @Column(name = "STOCKQUANTITY")
-    private Integer stockQuantity;
+    public Product() {}
 
-    @Column(name = "ISACTIVE")
-    private String isActive; // "Y" or "N"
+    public Long getProductId() {
+        return productId;
+    }
+    public void setProductId(Long productId) {
+        this.productId = productId;
+    }
 
-    @ManyToOne
-    @JoinColumn(name = "STAFFID")
-    private Staff staff;
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getBrand() {
+        return brand;
+    }
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+    public void setActive(boolean active) {
+        this.active = active;
+    }
 }

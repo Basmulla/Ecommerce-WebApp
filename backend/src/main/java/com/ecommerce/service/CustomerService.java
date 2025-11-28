@@ -3,7 +3,6 @@ package com.ecommerce.service;
 import com.ecommerce.entity.Customer;
 import com.ecommerce.repository.CustomerRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,6 +13,10 @@ public class CustomerService {
 
     private final CustomerRepository repo;
 
+    public Customer create(Customer c) {
+        return repo.save(c);
+    }
+
     public List<Customer> getAll() {
         return repo.findAll();
     }
@@ -22,23 +25,19 @@ public class CustomerService {
         return repo.findById(id).orElse(null);
     }
 
-    public Customer getByEmail(String email) {
-        return repo.findByEmail(email);
-    }
+    public Customer update(Long id, Customer updated) {
+        Customer c = getById(id);
+        if (c == null) return null;
 
-    public Customer create(Customer c) {
-        c.setPassword(BCrypt.hashpw(c.getPassword(), BCrypt.gensalt()));
+        c.setName(updated.getName());
+        c.setEmail(updated.getEmail());
+        c.setPassword(updated.getPassword());
+        c.setPhone(updated.getPhone());
+
         return repo.save(c);
     }
 
-    public Customer update(Long id, Customer updated) {
-        if (!repo.existsById(id)) return null;
-        updated.setCustomerId(id);
-        return repo.save(updated);
-    }
-
     public boolean delete(Long id) {
-        if (!repo.existsById(id)) return false;
         repo.deleteById(id);
         return true;
     }

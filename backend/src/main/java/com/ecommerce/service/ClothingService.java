@@ -13,35 +13,42 @@ public class ClothingService {
 
     private final ClothingRepository repo;
 
-    public List<Clothing> getAll() {
-        return repo.findAll();
+    public Clothing create(Clothing c) {
+        return repo.save(c);
     }
 
     public Clothing getById(Long id) {
         return repo.findById(id).orElse(null);
     }
 
-    public Clothing create(Clothing clothing) {
-        return repo.save(clothing);
+    public List<Clothing> getAll() {
+        return repo.findAll();
+    }
+
+    public List<Clothing> getBySize(String size) {
+        return repo.findBySize(size);
+    }
+
+    public List<Clothing> getByColor(String color) {
+        return repo.findByColorIgnoreCase(color);
     }
 
     public Clothing update(Long id, Clothing updated) {
-        if (!repo.existsById(id)) return null;
-        updated.setProductId(id);
-        return repo.save(updated);
+        Clothing c = getById(id);
+        if (c == null) return null;
+
+        c.setName(updated.getName());
+        c.setPrice(updated.getPrice());
+        c.setBrand(updated.getBrand());
+        c.setActive(updated.isActive());
+        c.setSize(updated.getSize());
+        c.setColor(updated.getColor());
+
+        return repo.save(c);
     }
 
     public boolean delete(Long id) {
-        if (!repo.existsById(id)) return false;
         repo.deleteById(id);
         return true;
-    }
-
-    public List<Clothing> findBySize(String size) {
-        return repo.findBySizeLabel(size);
-    }
-
-    public List<Clothing> findByGender(String gender) {
-        return repo.findByGenderCategory(gender);
     }
 }

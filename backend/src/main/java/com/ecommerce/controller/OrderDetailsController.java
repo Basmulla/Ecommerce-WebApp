@@ -8,49 +8,53 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/order-details")
+@RequestMapping("/api/order-details")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:5173")
 public class OrderDetailsController {
 
-    private final OrderDetailsService service;
+    private final OrderDetailsService orderDetailsService;
 
-    // -------------------------------------------------------------
-    // GET ALL ORDER DETAILS
-    // -------------------------------------------------------------
-    @GetMapping
-    public List<OrderDetails> getAll() {
-        return service.getAll();
+    // ============================================================
+    // CREATE ORDER ITEM
+    // ============================================================
+    @PostMapping("/create")
+    public OrderDetails create(@RequestBody OrderDetails orderDetails) {
+        return orderDetailsService.create(orderDetails);
     }
 
-    // -------------------------------------------------------------
+    // ============================================================
+    // GET ALL ITEMS FOR A GIVEN ORDER
+    // ============================================================
+    @GetMapping("/order/{orderId}")
+    public List<OrderDetails> getByOrder(@PathVariable Long orderId) {
+        return orderDetailsService.getByOrder(orderId);
+    }
+
+    // ============================================================
     // GET ORDER DETAIL BY ID
-    // -------------------------------------------------------------
+    // ============================================================
     @GetMapping("/{id}")
     public OrderDetails getById(@PathVariable Long id) {
-        return service.getById(id);
+        return orderDetailsService.getById(id);
     }
 
-    // -------------------------------------------------------------
-    // CREATE ORDER DETAIL
-    // -------------------------------------------------------------
-    @PostMapping
-    public OrderDetails create(@RequestBody OrderDetails od) {
-        return service.create(od);
+    // ============================================================
+    // UPDATE ORDER ITEM
+    // ============================================================
+    @PutMapping("/update/{id}")
+    public OrderDetails update(
+            @PathVariable Long id,
+            @RequestBody OrderDetails updated
+    ) {
+        return orderDetailsService.update(id, updated);
     }
 
-    // -------------------------------------------------------------
-    // UPDATE ORDER DETAIL
-    // -------------------------------------------------------------
-    @PutMapping("/{id}")
-    public OrderDetails update(@PathVariable Long id, @RequestBody OrderDetails updated) {
-        return service.update(id, updated);
-    }
-
-    // -------------------------------------------------------------
-    // DELETE ORDER DETAIL
-    // -------------------------------------------------------------
-    @DeleteMapping("/{id}")
+    // ============================================================
+    // DELETE ORDER ITEM
+    // ============================================================
+    @DeleteMapping("/delete/{id}")
     public boolean delete(@PathVariable Long id) {
-        return service.delete(id);
+        return orderDetailsService.delete(id);
     }
 }

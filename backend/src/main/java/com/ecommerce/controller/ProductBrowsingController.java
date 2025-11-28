@@ -8,34 +8,35 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/products")
+@RequestMapping("/api/browse")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:5173")
 public class ProductBrowsingController {
 
-    private final ProductService service;
+    private final ProductService productService;
 
-    @GetMapping
-    public List<Product> getAll() {
-        return service.getAll();
+    // ============================================================
+    // 1. GET ALL PRODUCTS (Frontend: /api/browse/products)
+    // ============================================================
+    @GetMapping("/products")
+    public List<Product> getAllProducts() {
+        return productService.getAll();
     }
 
-    @GetMapping("/{id}")
-    public Product getById(@PathVariable Long id) {
-        return service.getById(id);
+    // ============================================================
+    // 2. GET PRODUCT BY ID
+    // ============================================================
+    @GetMapping("/products/{id}")
+    public Product getProduct(@PathVariable Long id) {
+        return productService.getById(id);
     }
 
-    @GetMapping("/search/name")
-    public List<Product> searchByName(@RequestParam String q) {
-        return service.searchByName(q);
-    }
-
-    @GetMapping("/by-brand")
-    public List<Product> findByBrand(@RequestParam String brand) {
-        return service.findByBrand(brand);
-    }
-
-    @GetMapping("/active")
-    public List<Product> activeProducts() {
-        return service.getActive();
+    // ============================================================
+    // 3. SEARCH PRODUCTS BY KEYWORD
+    // (Frontend sends keyword=xxxx)
+    // ============================================================
+    @GetMapping("/search")
+    public List<Product> searchProducts(@RequestParam("keyword") String keyword) {
+        return productService.searchByName(keyword);
     }
 }

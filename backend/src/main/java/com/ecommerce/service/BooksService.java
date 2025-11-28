@@ -13,35 +13,42 @@ public class BooksService {
 
     private final BooksRepository repo;
 
-    public List<Books> getAll() {
-        return repo.findAll();
+    public Books create(Books b) {
+        return repo.save(b);
     }
 
     public Books getById(Long id) {
         return repo.findById(id).orElse(null);
     }
 
-    public Books create(Books book) {
-        return repo.save(book);
+    public List<Books> getAll() {
+        return repo.findAll();
+    }
+
+    public List<Books> getByIsbn(String isbn) {
+        return repo.findByIsbn(isbn);
+    }
+
+    public List<Books> getByAuthor(String author) {
+        return repo.findByAuthorContainingIgnoreCase(author);
     }
 
     public Books update(Long id, Books updated) {
-        if (!repo.existsById(id)) return null;
-        updated.setProductId(id);
-        return repo.save(updated);
+        Books b = getById(id);
+        if (b == null) return null;
+
+        b.setName(updated.getName());
+        b.setPrice(updated.getPrice());
+        b.setBrand(updated.getBrand());
+        b.setActive(updated.isActive());
+        b.setAuthor(updated.getAuthor());
+        b.setIsbn(updated.getIsbn());
+
+        return repo.save(b);
     }
 
     public boolean delete(Long id) {
-        if (!repo.existsById(id)) return false;
         repo.deleteById(id);
         return true;
-    }
-
-    public Books findByISBN(String isbn) {
-        return repo.findByISBN(isbn);
-    }
-
-    public List<Books> findByAuthor(String author) {
-        return repo.findByAuthor(author);
     }
 }

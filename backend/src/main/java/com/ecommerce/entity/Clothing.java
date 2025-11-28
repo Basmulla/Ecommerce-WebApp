@@ -1,22 +1,27 @@
 package com.ecommerce.entity;
 
-import lombok.*;
 import javax.persistence.*;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "CLOTHING")
-@PrimaryKeyJoinColumn(name = "PRODUCTID")
 public class Clothing extends Product {
 
-    @Column(name = "SIZELABEL")
-    private String sizeLabel;
+    private String size;
+    private String color;
 
-    @Column(name = "MATERIAL")
-    private String material;
+    public Clothing() {}
 
-    @Column(name = "GENDERCATEGORY")
-    private String genderCategory;
+    public String getSize() {
+        return size;
+    }
+    public void setSize(String size) {
+        this.size = size;
+    }
+
+    public String getColor() {
+        return color;
+    }
+    public void setColor(String color) {
+        this.color = color;
+    }
 }

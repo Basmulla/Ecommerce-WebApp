@@ -1,34 +1,54 @@
 package com.ecommerce.entity;
 
-import lombok.*;
 import javax.persistence.*;
-import java.util.Date;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "ORDERS")
 public class Orders {
 
     @Id
-    @Column(name = "ORDERID")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long orderId;
 
-    @ManyToOne
-    @JoinColumn(name = "CUSTOMERID")
-    private Customer customer;
-
-    @ManyToOne
-    @JoinColumn(name = "STAFFID")
-    private Staff staff;
-
-    @Column(name = "ORDERDATE")
-    private Date orderDate;
-
-    @Column(name = "STATUS")
+    private Long customerId;
+    private Long staffId;
+    private Double total;
     private String status;
 
-    @Column(name = "ORDERTOTAL")
-    private Double orderTotal;
+    public Orders() {}
+
+    public Long getOrderId() {
+        return orderId;
+    }
+    public void setOrderId(Long orderId) {
+        this.orderId = orderId;
+    }
+
+    public Long getCustomerId() {
+        return customerId;
+    }
+    public void setCustomerId(Long customerId) {
+        this.customerId = customerId;
+    }
+
+    public Long getStaffId() {
+        return staffId;
+    }
+    public void setStaffId(Long staffId) {
+        this.staffId = staffId;
+    }
+
+    public Double getTotal() {
+        return total;
+    }
+    public void setTotal(Double total) {
+        this.total = total;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+    public void setStatus(String status) {
+        this.status = status;
+    }
 }

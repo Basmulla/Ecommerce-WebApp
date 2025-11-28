@@ -13,26 +13,30 @@ public class OrderDetailsService {
 
     private final OrderDetailsRepository repo;
 
-    public List<OrderDetails> getAll() {
-        return repo.findAll();
+    public OrderDetails create(OrderDetails d) {
+        return repo.save(d);
     }
 
     public OrderDetails getById(Long id) {
         return repo.findById(id).orElse(null);
     }
 
-    public OrderDetails create(OrderDetails od) {
-        return repo.save(od);
+    public List<OrderDetails> getByOrder(Long orderId) {
+        return repo.findByOrderId(orderId);
     }
 
     public OrderDetails update(Long id, OrderDetails updated) {
-        if (!repo.existsById(id)) return null;
-        updated.setOrderDetailId(id);
-        return repo.save(updated);
+        OrderDetails d = getById(id);
+        if (d == null) return null;
+
+        d.setProductId(updated.getProductId());
+        d.setQuantity(updated.getQuantity());
+        d.setPrice(updated.getPrice());
+
+        return repo.save(d);
     }
 
     public boolean delete(Long id) {
-        if (!repo.existsById(id)) return false;
         repo.deleteById(id);
         return true;
     }

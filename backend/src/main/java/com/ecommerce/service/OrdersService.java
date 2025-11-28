@@ -1,6 +1,8 @@
 package com.ecommerce.service;
 
+import com.ecommerce.entity.OrderDetails;
 import com.ecommerce.entity.Orders;
+import com.ecommerce.repository.OrderDetailsRepository;
 import com.ecommerce.repository.OrdersRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -12,28 +14,53 @@ import java.util.List;
 public class OrdersService {
 
     private final OrdersRepository repo;
+    private final OrderDetailsRepository detailsRepo;
 
-    public List<Orders> getAll() {
-        return repo.findAll();
+    public Orders create(Orders o) {
+        o.setStatus("PENDING");
+        o.setTotal(0.0);
+        return repo.save(o);
     }
 
     public Orders getById(Long id) {
         return repo.findById(id).orElse(null);
     }
 
-    public Orders create(Orders o) {
+    public List<Orders> getAll() {
+        return repo.findAll();
+    }
+
+    public List<Orders> getByCustomer(Long customerId) {
+        return repo.findByCustomerId(customerId);
+    }
+
+    public List<Orders> getByStaff(Long staffId) {
+        return repo.findByStaffId(staffId);
+    }
+
+    public OrderDetails addItem(OrderDetails item) {
+        return detailsRepo.save(item);
+    }
+
+    public Orders updateStatus(Long id, String status) {
+        Orders o = getById(id);
+        if (o == null) return null;
+
+        o.setStatus(status);
         return repo.save(o);
     }
 
-    public Orders update(Long id, Orders updated) {
-        if (!repo.existsById(id)) return null;
-        updated.setOrderId(id);
-        return repo.save(updated);
-    }
+    public Orders calculateTotal(Long orderId) {
+        Orders o = getById(orderId);
+        if (o == null) return null;
 
-    public boolean delete(Long id) {
-        if (!repo.existsById(id)) return false;
-        repo.deleteById(id);
-        return true;
+        List<OrderDetails> items = detailsRepo.findByOrderId(orderId);
+
+        double total = items.stream()
+                .mapToDouble(i -> i.getPrice() * i.getQuantity())
+                .sum();
+
+        o.setTotal(total);
+        return repo.save(o);
     }
 }

@@ -1,30 +1,54 @@
 package com.ecommerce.entity;
 
-import lombok.*;
 import javax.persistence.*;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
-@Table(name = "ORDERDETAILS")
+@Table(name = "ORDER_DETAILS")
 public class OrderDetails {
 
     @Id
-    @Column(name = "ORDERDETAILID")
-    private Long orderDetailId;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long orderDetailsId;
 
-    @ManyToOne
-    @JoinColumn(name = "ORDERID")
-    private Orders order;
-
-    @ManyToOne
-    @JoinColumn(name = "PRODUCTID")
-    private Product product;
-
-    @Column(name = "QUANTITY")
+    private Long orderId;
+    private Long productId;
     private Integer quantity;
+    private Double price;
 
-    @Column(name = "PURCHASEPRICE")
-    private Double purchasePrice;
+    public OrderDetails() {}
+
+    public Long getOrderDetailsId() {
+        return orderDetailsId;
+    }
+    public void setOrderDetailsId(Long orderDetailsId) {
+        this.orderDetailsId = orderDetailsId;
+    }
+
+    public Long getOrderId() {
+        return orderId;
+    }
+    public void setOrderId(Long orderId) {
+        this.orderId = orderId;
+    }
+
+    public Long getProductId() {
+        return productId;
+    }
+    public void setProductId(Long productId) {
+        this.productId = productId;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+    public void setPrice(Double price) {
+        this.price = price;
+    }
 }

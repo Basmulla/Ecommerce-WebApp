@@ -5,8 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface ClothingRepository extends JpaRepository<Clothing, Long> {
-
-    List<Clothing> findBySizeLabel(String sizeLabel);
-
-    List<Clothing> findByGenderCategory(String genderCategory);
+    List<Clothing> findBySize(String size);
+    List<Clothing> findByColorIgnoreCase(String color);
 }

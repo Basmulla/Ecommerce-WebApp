@@ -8,34 +8,53 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/payments")
+@RequestMapping("/api/payments")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:5173")
 public class PaymentController {
 
-    private final PaymentService service;
+    private final PaymentService paymentService;
 
-    @GetMapping
-    public List<Payment> getAll() {
-        return service.getAll();
+    // ============================================================
+    // CREATE PAYMENT
+    // ============================================================
+    @PostMapping("/create")
+    public Payment create(@RequestBody Payment payment) {
+        return paymentService.create(payment);
     }
 
+    // ============================================================
+    // GET PAYMENTS BY ORDER ID
+    // ============================================================
+    @GetMapping("/order/{orderId}")
+    public List<Payment> getByOrder(@PathVariable Long orderId) {
+        return paymentService.getByOrder(orderId);
+    }
+
+    // ============================================================
+    // GET PAYMENT BY ID
+    // ============================================================
     @GetMapping("/{id}")
     public Payment getById(@PathVariable Long id) {
-        return service.getById(id);
+        return paymentService.getById(id);
     }
 
-    @PostMapping
-    public Payment create(@RequestBody Payment payment) {
-        return service.create(payment);
+    // ============================================================
+    // UPDATE PAYMENT
+    // ============================================================
+    @PutMapping("/update/{id}")
+    public Payment update(
+            @PathVariable Long id,
+            @RequestBody Payment updated
+    ) {
+        return paymentService.update(id, updated);
     }
 
-    @PutMapping("/{id}")
-    public Payment update(@PathVariable Long id, @RequestBody Payment updated) {
-        return service.update(id, updated);
-    }
-
-    @DeleteMapping("/{id}")
+    // ============================================================
+    // DELETE PAYMENT
+    // ============================================================
+    @DeleteMapping("/delete/{id}")
     public boolean delete(@PathVariable Long id) {
-        return service.delete(id);
+        return paymentService.delete(id);
     }
 }

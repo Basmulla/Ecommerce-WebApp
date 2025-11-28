@@ -1,5 +1,6 @@
 package com.ecommerce.service;
 
+import com.ecommerce.dto.PaymentRequest;
 import com.ecommerce.entity.Payment;
 import com.ecommerce.repository.PaymentRepository;
 import lombok.RequiredArgsConstructor;
@@ -13,26 +14,37 @@ public class PaymentService {
 
     private final PaymentRepository repo;
 
-    public List<Payment> getAll() {
-        return repo.findAll();
+    public Payment processPayment(PaymentRequest req) {
+
+        Payment p = new Payment();
+        p.setOrderId(req.getOrderId());
+        p.setMethod(req.getMethod());
+        p.setAmount(req.getAmount());
+        p.setStaffId(req.getStaffId());
+
+        return repo.save(p);
     }
 
     public Payment getById(Long id) {
         return repo.findById(id).orElse(null);
     }
 
-    public Payment create(Payment p) {
-        return repo.save(p);
+    public List<Payment> getByOrder(Long orderId) {
+        return repo.findByOrderId(orderId);
     }
 
     public Payment update(Long id, Payment updated) {
-        if (!repo.existsById(id)) return null;
-        updated.setPaymentId(id);
-        return repo.save(updated);
+        Payment p = getById(id);
+        if (p == null) return null;
+
+        p.setMethod(updated.getMethod());
+        p.setAmount(updated.getAmount());
+        p.setStaffId(updated.getStaffId());
+
+        return repo.save(p);
     }
 
     public boolean delete(Long id) {
-        if (!repo.existsById(id)) return false;
         repo.deleteById(id);
         return true;
     }

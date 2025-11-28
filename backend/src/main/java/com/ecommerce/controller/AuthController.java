@@ -12,74 +12,101 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 @RequiredArgsConstructor
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:5173")
 public class AuthController {
 
     private final CustomerService customerService;
     private final StaffService staffService;
     private final JwtService jwtService;
+    private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
-    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    // ============================================================
+    // LOGIN (Frontend expects ONLY this)
+    // ============================================================
+    @PostMapping("/login")
+    public LoginResponse login(@RequestBody LoginRequest req) {
 
-    // -------------------------------------------------------------
-    // 1. Staff Login
-    // -------------------------------------------------------------
-    @PostMapping("/login/staff")
-    public AuthResponse staffLogin(@RequestBody LoginRequest request) {
+        // Try staff first
+        Staff staff = staffService.getByEmail(req.getEmail());
+        if (staff != null && encoder.matches(req.getPassword(), staff.getPassword())) {
 
-        Staff staff = staffService.findByEmail(request.getEmail());
-        if (staff == null) {
-            return new AuthResponse(null, "Invalid email or password", null, null, null);
+            String token = jwtService.generateToken(
+                    staff.getEmail(),
+                    staff.getRole(),
+                    staff.getStaffId()
+            );
+
+            return new LoginResponse(
+                    token,
+                    new UserResponse(
+                            staff.getStaffId(),
+                            staff.getName(),
+                            staff.getEmail(),
+                            staff.getRole()
+                    )
+            );
         }
 
-        if (!passwordEncoder.matches(request.getPassword(), staff.getPassword())) {
-            return new AuthResponse(null, "Invalid email or password", null, null, null);
+        // Try customer
+        Customer customer = customerService.getByEmail(req.getEmail());
+        if (customer != null && encoder.matches(req.getPassword(), customer.getPassword())) {
+
+            String token = jwtService.generateToken(
+                    customer.getEmail(),
+                    "CUSTOMER",
+                    customer.getCustomerId()
+            );
+
+            return new LoginResponse(
+                    token,
+                    new UserResponse(
+                            customer.getCustomerId(),
+                            customer.getName(),
+                            customer.getEmail(),
+                            "CUSTOMER"
+                    )
+            );
         }
 
-        // JWT Generation
-        String token = jwtService.generateToken(staff.getEmail(), staff.getRole(), staff.getStaffId());
+        throw new RuntimeException("Invalid email or password");
+    }
 
-        return new AuthResponse(
+    // ============================================================
+    // REGISTER
+    // Used by frontend or optional
+    // ============================================================
+    @PostMapping("/register")
+    public LoginResponse register(@RequestBody RegisterRequest req) {
+
+        // Create new customer
+        Customer customer = new Customer();
+        customer.setCustomerId(null); // DB sequence
+        customer.setName(req.getName());
+        customer.setEmail(req.getEmail());
+        customer.setPassword(encoder.encode(req.getPassword()));
+        Customer saved = customerService.create(customer);
+
+        // Generate token
+        String token = jwtService.generateToken(saved.getEmail(), "CUSTOMER", saved.getCustomerId());
+
+        return new LoginResponse(
                 token,
-                "STAFF_LOGIN_SUCCESS",
-                staff.getRole(),
-                staff.getName(),
-                staff.getEmail()
+                new UserResponse(
+                        saved.getCustomerId(),
+                        saved.getName(),
+                        saved.getEmail(),
+                        "CUSTOMER"
+                )
         );
     }
 
-    // -------------------------------------------------------------
-    // 2. Customer Login
-    // -------------------------------------------------------------
-    @PostMapping("/login/customer")
-    public AuthResponse customerLogin(@RequestBody LoginRequest request) {
 
-        Customer customer = customerService.findByEmail(request.getEmail());
-        if (customer == null) {
-            return new AuthResponse(null, "Invalid email or password", null, null, null);
-        }
+    // ============================================================
+    // DTOs
+    // ============================================================
 
-        if (!passwordEncoder.matches(request.getPassword(), customer.getPassword())) {
-            return new AuthResponse(null, "Invalid email or password", null, null, null);
-        }
-
-        // Customer has no role in DB → assign manually
-        String token = jwtService.generateToken(customer.getEmail(), "CUSTOMER", customer.getCustomerId());
-
-        return new AuthResponse(
-                token,
-                "CUSTOMER_LOGIN_SUCCESS",
-                "CUSTOMER",
-                customer.getName(),
-                customer.getEmail()
-        );
-    }
-
-    // -------------------------------------------------------------
-    // Request + Response DTOs
-    // -------------------------------------------------------------
     @Data
     public static class LoginRequest {
         private String email;
@@ -87,12 +114,25 @@ public class AuthController {
     }
 
     @Data
-    @AllArgsConstructor
-    public static class AuthResponse {
-        private String token;
-        private String message;
-        private String role;
+    public static class RegisterRequest {
         private String name;
         private String email;
+        private String password;
+    }
+
+    @Data
+    @AllArgsConstructor
+    public static class LoginResponse {
+        private String token;
+        private UserResponse user;
+    }
+
+    @Data
+    @AllArgsConstructor
+    public static class UserResponse {
+        private Long id;
+        private String name;
+        private String email;
+        private String role;
     }
 }

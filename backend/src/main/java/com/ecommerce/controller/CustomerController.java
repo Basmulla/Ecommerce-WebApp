@@ -8,49 +8,53 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/customers")
+@RequestMapping("/api/customers")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:5173")
 public class CustomerController {
 
-    private final CustomerService service;
+    private final CustomerService customerService;
 
-    // -------------------------------------------------------------
-    // GET ALL
-    // -------------------------------------------------------------
-    @GetMapping
-    public List<Customer> getAll() {
-        return service.getAll();
+    // ============================================================
+    // CREATE CUSTOMER
+    // ============================================================
+    @PostMapping("/create")
+    public Customer create(@RequestBody Customer customer) {
+        return customerService.create(customer);
     }
 
-    // -------------------------------------------------------------
-    // GET BY ID
-    // -------------------------------------------------------------
+    // ============================================================
+    // GET ALL CUSTOMERS
+    // ============================================================
+    @GetMapping("/all")
+    public List<Customer> getAll() {
+        return customerService.getAll();
+    }
+
+    // ============================================================
+    // GET CUSTOMER BY ID
+    // ============================================================
     @GetMapping("/{id}")
     public Customer getById(@PathVariable Long id) {
-        return service.getById(id);
+        return customerService.getById(id);
     }
 
-    // -------------------------------------------------------------
-    // CREATE CUSTOMER
-    // -------------------------------------------------------------
-    @PostMapping
-    public Customer create(@RequestBody Customer customer) {
-        return service.create(customer);
-    }
-
-    // -------------------------------------------------------------
+    // ============================================================
     // UPDATE CUSTOMER
-    // -------------------------------------------------------------
-    @PutMapping("/{id}")
-    public Customer update(@PathVariable Long id, @RequestBody Customer updated) {
-        return service.update(id, updated);
+    // ============================================================
+    @PutMapping("/update/{id}")
+    public Customer update(
+            @PathVariable Long id,
+            @RequestBody Customer updatedCustomer
+    ) {
+        return customerService.update(id, updatedCustomer);
     }
 
-    // -------------------------------------------------------------
+    // ============================================================
     // DELETE CUSTOMER
-    // -------------------------------------------------------------
-    @DeleteMapping("/{id}")
+    // ============================================================
+    @DeleteMapping("/delete/{id}")
     public boolean delete(@PathVariable Long id) {
-        return service.delete(id);
+        return customerService.delete(id);
     }
 }
