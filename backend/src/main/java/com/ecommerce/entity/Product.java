@@ -52,4 +52,14 @@ public class Product {
     public void setActive(boolean active) {
         this.active = active;
     }
+
+    public Object getCategory() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getCategory'");
+    }
+
+    public void setCategory(Object category) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setCategory'");
+    }
 }

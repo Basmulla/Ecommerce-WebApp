@@ -1,5 +1,6 @@
 package com.ecommerce.service;
 
+import com.ecommerce.dto.PaymentRequest;
 import com.ecommerce.entity.Payment;
 import com.ecommerce.repository.PaymentRepository;
 import lombok.RequiredArgsConstructor;
@@ -40,5 +41,10 @@ public class PaymentService {
         if (!repo.existsById(id)) return false;
         repo.deleteById(id);
         return true;
+    }
+
+    public Payment processPayment(PaymentRequest request) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'processPayment'");
     }
 }

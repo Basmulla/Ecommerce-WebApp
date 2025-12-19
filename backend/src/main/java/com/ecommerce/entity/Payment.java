@@ -51,4 +51,14 @@ public class Payment {
     public void setStaffId(Long staffId) {
         this.staffId = staffId;
     }
+
+    public Object getStatus() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getStatus'");
+    }
+
+    public void setStatus(Object status) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setStatus'");
+    }
 }

@@ -30,7 +30,11 @@ public class OrdersService {
 
         double total = detailsRepo.findByOrderId(orderId)
                 .stream()
-                .mapToDouble(OrderDetails::getSubtotal)
+                .mapToDouble(d -> {
+                    Double price = d.getPrice() == null ? 0.0 : d.getPrice();
+                    Integer qty = d.getQuantity() == null ? 0 : d.getQuantity();
+                    return price * qty;
+                })
                 .sum();
 
         order.setTotal(total);

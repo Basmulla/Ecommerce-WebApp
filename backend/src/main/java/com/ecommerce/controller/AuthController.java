@@ -3,7 +3,6 @@ package com.ecommerce.controller;
 import com.ecommerce.dto.RegisterRequest;
 import com.ecommerce.dto.AuthResponse;
 import com.ecommerce.dto.LoginRequest;
-import com.ecommerce.dto.RegisterRequest;
 import com.ecommerce.entity.Customer;
 import com.ecommerce.entity.Staff;
 import com.ecommerce.security.JwtService;
